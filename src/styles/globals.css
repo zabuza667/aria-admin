@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  html {
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background-color: #0a0b12;
+    color: white;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #12141f; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(100,112,241,0.4); }
+}
+
+@layer components {
+  .card { background-color: #12141f; border: 1px solid rgba(255,255,255,0.05); border-radius: 1rem; }
+  .card-hover { transition: all 0.2s; }
+  .card-hover:hover { border-color: rgba(100,112,241,0.3); box-shadow: 0 0 10px rgba(100,112,241,0.2); }
+  .btn-primary { background-color: #4f52e5; color: white; font-weight: 500; padding: 0.5rem 1rem; border-radius: 0.75rem; transition: all 0.15s; display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; border: none; cursor: pointer; }
+  .btn-primary:hover { background-color: #6470f1; }
+  .btn-secondary { background-color: rgba(255,255,255,0.05); color: rgba(255,255,255,0.8); font-weight: 500; padding: 0.5rem 1rem; border-radius: 0.75rem; transition: all 0.15s; display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; }
+  .btn-secondary:hover { background-color: rgba(255,255,255,0.1); color: white; }
+  .btn-ghost { color: rgba(255,255,255,0.6); padding: 0.5rem 0.75rem; border-radius: 0.75rem; transition: all 0.15s; display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; background: none; border: none; cursor: pointer; }
+  .btn-ghost:hover { background-color: rgba(255,255,255,0.05); color: white; }
+  .input { background-color: #1a1d2e; border: 1px solid rgba(255,255,255,0.1); border-radius: 0.75rem; padding: 0.625rem 1rem; font-size: 0.875rem; color: white; outline: none; width: 100%; transition: all 0.15s; }
+  .input::placeholder { color: rgba(255,255,255,0.3); }
+  .input:focus { border-color: rgba(100,112,241,0.5); box-shadow: 0 0 0 2px rgba(100,112,241,0.1); }
+  .badge { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.125rem 0.5rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; }
+  .section-title { font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 1.125rem; color: white; }
+  .label { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em; }
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideIn { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 8px rgba(100,112,241,0.3); } 50% { box-shadow: 0 0 20px rgba(100,112,241,0.6); } }
+@keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.animate-fadeIn { animation: fadeIn 0.3s ease forwards; }
+.animate-slideIn { animation: slideIn 0.3s ease forwards; }
+.animate-pulse-glow { animation: pulseGlow 2s ease-in-out infinite; }
+.animate-spin-slow { animation: spinSlow 3s linear infinite; }
+
+.stagger-1 { animation-delay: 0.05s; opacity: 0; }
+.stagger-2 { animation-delay: 0.10s; opacity: 0; }
+.stagger-3 { animation-delay: 0.15s; opacity: 0; }
+.stagger-4 { animation-delay: 0.20s; opacity: 0; }
+.stagger-5 { animation-delay: 0.25s; opacity: 0; }
