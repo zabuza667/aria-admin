@@ -37,6 +37,7 @@ export default function App() {
     return localStorage.getItem('briefing_seen_' + today) === '1'
   })
   const [refreshKey, setRefreshKey] = useState(0)
+  const inactivityTimer = useRef(null)
 
   function handleRefresh() {
     setRefreshKey(k => k + 1)
