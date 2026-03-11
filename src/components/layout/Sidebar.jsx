@@ -1,11 +1,21 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { getNavItems, ROLES } from '../../lib/roles'
 
 export default function Sidebar({ current, onNavigate, user, lang, onLogout, notifCount = 0 }) {
   const [collapsed, setCollapsed] = useState(false)
+  const [pulse, setPulse] = useState(false)
   const role = user?.role || 'admin'
   const navItems = getNavItems(role, lang)
   const roleInfo = ROLES[role]
+
+  // Pulse animation quand nouvelles notifications
+  useEffect(() => {
+    if (notifCount > 0) {
+      setPulse(true)
+      const t = setTimeout(() => setPulse(false), 1000)
+      return () => clearTimeout(t)
+    }
+  }, [notifCount])
 
   return (
     <aside style={{
@@ -50,9 +60,30 @@ export default function Sidebar({ current, onNavigate, user, lang, onLogout, not
             onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'rgba(255,255,255,0.5)' }}}
             >
               {isActive && <div style={{ position: 'absolute', left: 0, top: '20%', bottom: '20%', width: 3, borderRadius: '0 4px 4px 0', background: '#6470f1' }} />}
-              <span style={{ fontSize: 16 }}>{item.icon}</span>
+              <span style={{ fontSize: 16, position: 'relative' }}>
+                {item.icon}
+                {/* Badge point rouge sur l'icône quand collapsed */}
+                {collapsed && showBadge && (
+                  <span style={{
+                    position: 'absolute', top: -4, right: -4,
+                    width: 8, height: 8, borderRadius: '50%',
+                    background: '#ef4444',
+                    boxShadow: '0 0 6px rgba(239,68,68,0.8)',
+                    animation: pulse ? 'none' : 'pulse 2s infinite',
+                  }} />
+                )}
+              </span>
               {!collapsed && <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.label}</span>}
-              {!collapsed && showBadge && <span style={{ marginLeft: 'auto', background: '#ef4444', color: 'white', borderRadius: 9999, fontSize: 10, fontWeight: 700, padding: '1px 6px' }}>{notifCount}</span>}
+              {!collapsed && showBadge && (
+                <span style={{
+                  marginLeft: 'auto',
+                  background: 'linear-gradient(135deg, #ef4444, #f97316)',
+                  color: 'white', borderRadius: 99, fontSize: 10, fontWeight: 700,
+                  padding: '2px 7px', minWidth: 20, textAlign: 'center',
+                  boxShadow: '0 0 8px rgba(239,68,68,0.5)',
+                  animation: pulse ? 'badgePop 0.4s ease' : 'none',
+                }}>{notifCount}</span>
+              )}
             </button>
           )
         })}
@@ -85,6 +116,18 @@ export default function Sidebar({ current, onNavigate, user, lang, onLogout, not
           </div>
         )}
       </div>
+
+      <style>{`
+        @keyframes badgePop {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.4); }
+          100% { transform: scale(1); }
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 1; box-shadow: 0 0 6px rgba(239,68,68,0.8); }
+          50% { opacity: 0.6; box-shadow: 0 0 12px rgba(239,68,68,0.4); }
+        }
+      `}</style>
     </aside>
   )
 }

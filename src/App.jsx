@@ -36,7 +36,11 @@ export default function App() {
     const today = new Date().toDateString()
     return localStorage.getItem('briefing_seen_' + today) === '1'
   })
-  const inactivityTimer = useRef(null)
+  const [refreshKey, setRefreshKey] = useState(0)
+
+  function handleRefresh() {
+    setRefreshKey(k => k + 1)
+  }
   const searchRef = useRef(null)
   const isFr = lang === 'fr'
 
@@ -241,14 +245,14 @@ export default function App() {
           onOpenSearch={() => { setShowSearch(true); setTimeout(() => searchRef.current?.focus(), 50) }}
           darkMode={darkMode}
           setDarkMode={setDarkMode}
-          onNavigate={navigate}
+          onRefresh={handleRefresh}
         />
         <main style={{ flex: 1, overflowY: 'auto' }}>
           {/* Dashboard toujours monté - jamais détruit */}
           <div style={{ display: section === 'dashboard' ? 'block' : 'none' }}>
             <Dashboard {...dashboardProps} />
           </div>
-          {section !== 'dashboard' && renderSection()}
+          {section !== 'dashboard' && <div key={refreshKey}>{renderSection()}</div>}
         </main>
       </div>
     </div>

@@ -1,10 +1,20 @@
+import { useState } from 'react'
 import { NAV_ITEMS } from '../../lib/roles'
 
-export default function Header({ section, lang, setLang, user, notifications = [], unreadNotifs = 0, onOpenSearch, darkMode, setDarkMode, onNavigate }) {
+export default function Header({ section, lang, setLang, user, notifications = [], unreadNotifs = 0, onOpenSearch, darkMode, setDarkMode, onNavigate, onRefresh }) {
+  const [copied, setCopied] = useState(false)
   const navItem = NAV_ITEMS.find(n => n.id === section)
   const label = navItem ? (lang === 'fr' ? navItem.labelFr : navItem.labelEn) : ''
   const icon = navItem?.icon || '🏠'
   const isFr = lang === 'fr'
+
+  function handleCopy() {
+    const url = window.location.href
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    })
+  }
 
   return (
     <header style={{
@@ -36,6 +46,19 @@ export default function Header({ section, lang, setLang, user, notifications = [
       </button>
 
       <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6 }}>
+        {/* Refresh */}
+        <button onClick={() => onRefresh?.()} title={isFr ? 'Rafraîchir' : 'Refresh'} style={{
+          background: darkMode ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.07)',
+          border: '1px solid ' + (darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.12)'),
+          borderRadius: 8, padding: '5px 10px', cursor: 'pointer', fontSize: 14,
+        }}>🔄</button>
+
+        {/* Copy link */}
+        <button onClick={handleCopy} title={isFr ? 'Copier le lien' : 'Copy link'} style={{
+          background: copied ? 'rgba(16,185,129,0.15)' : (darkMode ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.07)'),
+          border: '1px solid ' + (copied ? 'rgba(16,185,129,0.4)' : (darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.12)')),
+          borderRadius: 8, padding: '5px 10px', cursor: 'pointer', fontSize: 14, transition: 'all 0.2s',
+        }}>{copied ? '✅' : '📋'}</button>
         {/* Dark/light toggle */}
         <button onClick={() => setDarkMode?.(!darkMode)} style={{
           background: darkMode ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.07)',
