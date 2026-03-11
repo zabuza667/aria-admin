@@ -220,7 +220,7 @@ export default function AccountingView({ lang, addLog }) {
             color: activeTab === t ? '#a5b8fc' : 'rgba(255,255,255,0.5)',
           }}>{l}</button>
         ))}
-        <div style={{ marginLeft: 'auto', display: 'flex', gap: 8' }}>
+        <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
           {(activeTab === 'invoices' || activeTab === 'expenses') && (
             <>
               {/* OCR BUTTON */}
