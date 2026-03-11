@@ -151,9 +151,10 @@ export default function App() {
   const unreadNotifs = notifications.filter(n => !n.read).length
   const sharedProps = { lang, user, addLog, addNotification }
 
+  const dashboardProps = { ...sharedProps, stats, onNavigate: navigate, darkMode, setDarkMode, briefingShownToday, onBriefingShown: () => { const today = new Date().toDateString(); localStorage.setItem('briefing_seen_' + today, '1'); setBriefingShownToday(true) } }
+
   const renderSection = () => {
     switch (section) {
-      case 'dashboard':     return <Dashboard {...sharedProps} stats={stats} onNavigate={navigate} darkMode={darkMode} setDarkMode={setDarkMode} briefingShownToday={briefingShownToday} onBriefingShown={() => { const today = new Date().toDateString(); localStorage.setItem('briefing_seen_' + today, '1'); setBriefingShownToday(true) }} />
       case 'emails':        return <EmailView {...sharedProps} />
       case 'calendar':      return <CalendarView {...sharedProps} />
       case 'tasks':         return <TasksView {...sharedProps} />
@@ -168,7 +169,7 @@ export default function App() {
       case 'team':          return <TeamView lang={lang} user={user} />
       case 'notifications': return <NotificationsView lang={lang} notifications={notifications} setNotifications={setNotifications} />
       case 'ceo':           return <CEOView lang={lang} user={user} />
-      default:              return <Dashboard {...sharedProps} stats={stats} onNavigate={navigate} darkMode={darkMode} setDarkMode={setDarkMode} />
+      default:              return null
     }
   }
 
@@ -243,7 +244,11 @@ export default function App() {
           onNavigate={navigate}
         />
         <main style={{ flex: 1, overflowY: 'auto' }}>
-          {renderSection()}
+          {/* Dashboard toujours monté - jamais détruit */}
+          <div style={{ display: section === 'dashboard' ? 'block' : 'none' }}>
+            <Dashboard {...dashboardProps} />
+          </div>
+          {section !== 'dashboard' && renderSection()}
         </main>
       </div>
     </div>
