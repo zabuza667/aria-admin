@@ -18,7 +18,7 @@ const ONBOARDING_STEPS = [
   { icon: '🚀', titleFr: 'Tout est prêt !', titleEn: 'All set!', descFr: 'Aria est prête à vous aider. Explorez les sections depuis le menu de gauche.', descEn: 'Aria is ready to help. Explore sections from the left menu.' },
 ]
 
-export default function Dashboard({ lang, user, stats = {}, onNavigate, addLog, darkMode, setDarkMode }) {
+export default function Dashboard({ lang, user, stats = {}, onNavigate, addLog, darkMode, setDarkMode, briefingShownToday, onBriefingShown }) {
   const [aiInput, setAiInput] = useState('')
   const [aiLoading, setAiLoading] = useState(false)
   const [aiHistory, setAiHistory] = useLS('ai_history', [])
@@ -56,6 +56,7 @@ export default function Dashboard({ lang, user, stats = {}, onNavigate, addLog, 
       const text = await generateDailyBriefing({ stats, user, date: today }, lang)
       setBriefing(text); setBriefingDate(today); setShowBriefing(true)
       localStorage.setItem('briefing_seen_' + today, '1')
+      onBriefingShown?.()
     } catch {
       setBriefing(isFr ? 'Bienvenue sur Aria ! Bonne journée productive. 🚀' : 'Welcome to Aria! Have a productive day. 🚀')
       setShowBriefing(true)
@@ -64,9 +65,7 @@ export default function Dashboard({ lang, user, stats = {}, onNavigate, addLog, 
   }
 
   useEffect(() => {
-    const today = new Date().toDateString()
-    const alreadySeen = localStorage.getItem('briefing_seen_' + today)
-    if (!alreadySeen) loadBriefing()
+    if (!briefingShownToday) loadBriefing()
   }, [])
 
   async function sendMessage() {

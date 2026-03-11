@@ -238,11 +238,17 @@ export default function ExcelView({ lang, addLog }) {
                 </LineChart>
               ) : (
                 <PieChart>
-                  <Pie data={data.map(d => ({ name: d[xKey], value: d[chartKeys[0]] || 0 }))} cx="50%" cy="50%" outerRadius="70%" dataKey="value" label={({ name, percent }) => name + ' ' + (percent * 100).toFixed(0) + '%'}>
-                    {data.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                  <Pie data={data.map(d => ({ name: d[xKey], value: d[chartKeys[0]] || 0 }))} cx="50%" cy="50%" innerRadius="35%" outerRadius="65%" paddingAngle={3} dataKey="value" labelLine={false} label={({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
+                    const RADIAN = Math.PI / 180
+                    const radius = innerRadius + (outerRadius - innerRadius) * 0.5
+                    const x = cx + radius * Math.cos(-midAngle * RADIAN)
+                    const y = cy + radius * Math.sin(-midAngle * RADIAN)
+                    return percent > 0.05 ? <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" fontSize={11} fontWeight={700}>{(percent * 100).toFixed(0)}%</text> : null
+                  }}>
+                    {data.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} stroke={COLORS[i % COLORS.length] + '40'} strokeWidth={2} />)}
                   </Pie>
-                  <Tooltip contentStyle={{ background: '#1a1d2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, color: 'white' }} />
-                  <Legend />
+                  <Tooltip contentStyle={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, color: '#1a1d2e', fontSize: 12, boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }} />
+                  <Legend wrapperStyle={{ fontSize: 12, color: 'rgba(255,255,255,0.6)' }} />
                 </PieChart>
               )}
             </ResponsiveContainer>

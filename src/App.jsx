@@ -32,6 +32,10 @@ export default function App() {
   const [darkMode, setDarkMode] = useState(true)
   const [showSearch, setShowSearch] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [briefingShownToday, setBriefingShownToday] = useState(() => {
+    const today = new Date().toDateString()
+    return localStorage.getItem('briefing_seen_' + today) === '1'
+  })
   const inactivityTimer = useRef(null)
   const searchRef = useRef(null)
   const isFr = lang === 'fr'
@@ -149,7 +153,7 @@ export default function App() {
 
   const renderSection = () => {
     switch (section) {
-      case 'dashboard':     return <Dashboard {...sharedProps} stats={stats} onNavigate={navigate} darkMode={darkMode} setDarkMode={setDarkMode} />
+      case 'dashboard':     return <Dashboard {...sharedProps} stats={stats} onNavigate={navigate} darkMode={darkMode} setDarkMode={setDarkMode} briefingShownToday={briefingShownToday} onBriefingShown={() => { const today = new Date().toDateString(); localStorage.setItem('briefing_seen_' + today, '1'); setBriefingShownToday(true) }} />
       case 'emails':        return <EmailView {...sharedProps} />
       case 'calendar':      return <CalendarView {...sharedProps} />
       case 'tasks':         return <TasksView {...sharedProps} />
