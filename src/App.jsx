@@ -247,6 +247,7 @@ export default function App() {
           darkMode={darkMode}
           setDarkMode={setDarkMode}
           onRefresh={handleRefresh}
+          onNavigate={navigate}
         />
         <main style={{ flex: 1, overflowY: 'auto' }}>
           {/* Dashboard toujours monté - jamais détruit */}
