@@ -19,7 +19,7 @@ const PIE_DATA = [
 ]
 
 const TS = {
-  contentStyle: { background: '#1a1d2e', border: '1px solid rgba(100,112,241,0.3)', borderRadius: 10, color: 'white', fontSize: 12, boxShadow: '0 8px 24px rgba(0,0,0,0.4)' },
+  contentStyle: { background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, color: '#1a1d2e', fontSize: 12, boxShadow: '0 8px 24px rgba(0,0,0,0.15)' },
   cursor: { fill: 'rgba(255,255,255,0.04)' },
 }
 

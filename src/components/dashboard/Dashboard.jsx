@@ -65,7 +65,8 @@ export default function Dashboard({ lang, user, stats = {}, onNavigate, addLog, 
 
   useEffect(() => {
     const today = new Date().toDateString()
-    if (briefingDate !== today) loadBriefing()
+    const alreadySeen = localStorage.getItem('briefing_seen_' + today)
+    if (!alreadySeen) loadBriefing()
   }, [])
 
   async function sendMessage() {
