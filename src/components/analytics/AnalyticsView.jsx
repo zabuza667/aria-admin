@@ -19,9 +19,8 @@ const PIE_DATA = [
 ]
 
 const TS = {
-  contentStyle: { background: '#1a1d2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, color: 'white', fontSize: 12 },
+  contentStyle: { background: '#1a1d2e', border: '1px solid rgba(100,112,241,0.3)', borderRadius: 10, color: 'white', fontSize: 12, boxShadow: '0 8px 24px rgba(0,0,0,0.4)' },
   cursor: { fill: 'rgba(255,255,255,0.04)' },
-  labelStyle: { color: 'rgba(255,255,255,0.6)' },
 }
 
 // Custom donut label

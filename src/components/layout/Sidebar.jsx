@@ -43,7 +43,7 @@ export default function Sidebar({ current, onNavigate, user, lang, onLogout, not
               transition: 'all 0.15s',
               background: isActive ? 'rgba(100,112,241,0.15)' : 'transparent',
               color: isActive ? '#a5b8fc' : 'rgba(255,255,255,0.5)',
-              fontFamily: 'DM Sans', fontSize: 13.5, fontWeight: isActive ? 600 : 400,
+              fontFamily: 'Outfit', fontSize: 13, fontWeight: isActive ? 600 : 400, letterSpacing: '0.01em',
               position: 'relative',
             }}
             onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.color = 'rgba(255,255,255,0.8)' }}}

@@ -48,11 +48,14 @@ export default function Dashboard({ lang, user, stats = {}, onNavigate, addLog, 
 
   async function loadBriefing(force = false) {
     const today = new Date().toDateString()
-    if (!force && briefingDate === today && briefing) { setShowBriefing(true); return }
+    const seenKey = 'briefing_seen_' + today
+    if (!force && briefingDate === today && briefing && localStorage.getItem(seenKey)) { return }
+    if (!force && briefingDate === today && briefing) { setShowBriefing(true); localStorage.setItem(seenKey, '1'); return }
     setBriefingLoading(true)
     try {
       const text = await generateDailyBriefing({ stats, user, date: today }, lang)
       setBriefing(text); setBriefingDate(today); setShowBriefing(true)
+      localStorage.setItem('briefing_seen_' + today, '1')
     } catch {
       setBriefing(isFr ? 'Bienvenue sur Aria ! Bonne journée productive. 🚀' : 'Welcome to Aria! Have a productive day. 🚀')
       setShowBriefing(true)
