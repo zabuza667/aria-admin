@@ -21,20 +21,20 @@
 }
 
 body.light {
-  --bg:          #f0f2f8;
-  --bg2:         #e8eaf2;
-  --surface:     #ffffff;
-  --surface2:    #f5f6fa;
-  --border:      rgba(0,0,0,0.07);
-  --border2:     rgba(0,0,0,0.1);
+  --bg:          #e2e5f0;
+  --bg2:         #d8dcea;
+  --surface:     #eef0f8;
+  --surface2:    #e8eaf4;
+  --border:      rgba(0,0,0,0.1);
+  --border2:     rgba(0,0,0,0.15);
   --text:        #1a1d2e;
-  --text2:       rgba(0,0,0,0.7);
-  --muted:       rgba(0,0,0,0.45);
-  --muted2:      rgba(0,0,0,0.25);
-  --input-bg:    #f0f2f8;
-  --scrollbar:   rgba(0,0,0,0.12);
+  --text2:       #2e3248;
+  --muted:       #5a5f7a;
+  --muted2:      #8085a0;
+  --input-bg:    #eef0f8;
+  --scrollbar:   rgba(0,0,0,0.15);
   --primary:     #4f52e5;
-  --primary-dim: rgba(79,82,229,0.1);
+  --primary-dim: rgba(79,82,229,0.12);
 }
 
 @layer base {
