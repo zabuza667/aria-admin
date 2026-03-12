@@ -2,6 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─── VARIABLES THÈME ─────────────────────────────────────── */
+:root {
+  --bg:          #0a0b12;
+  --bg2:         #0e1019;
+  --surface:     #12141f;
+  --surface2:    #1a1d2e;
+  --border:      rgba(255,255,255,0.05);
+  --border2:     rgba(255,255,255,0.08);
+  --text:        #ffffff;
+  --text2:       rgba(255,255,255,0.7);
+  --muted:       rgba(255,255,255,0.4);
+  --muted2:      rgba(255,255,255,0.2);
+  --input-bg:    #1a1d2e;
+  --scrollbar:   rgba(255,255,255,0.1);
+  --primary:     #6470f1;
+  --primary-dim: rgba(100,112,241,0.15);
+}
+
+body.light {
+  --bg:          #f0f2f8;
+  --bg2:         #e8eaf2;
+  --surface:     #ffffff;
+  --surface2:    #f5f6fa;
+  --border:      rgba(0,0,0,0.07);
+  --border2:     rgba(0,0,0,0.1);
+  --text:        #1a1d2e;
+  --text2:       rgba(0,0,0,0.7);
+  --muted:       rgba(0,0,0,0.45);
+  --muted2:      rgba(0,0,0,0.25);
+  --input-bg:    #f0f2f8;
+  --scrollbar:   rgba(0,0,0,0.12);
+  --primary:     #4f52e5;
+  --primary-dim: rgba(79,82,229,0.1);
+}
+
 @layer base {
   * { box-sizing: border-box; }
   html {
@@ -9,34 +44,95 @@
     -webkit-font-smoothing: antialiased;
   }
   body {
-    background-color: #0a0b12;
-    color: white;
+    background-color: var(--bg);
+    color: var(--text);
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    transition: background-color 0.3s, color 0.3s;
   }
   ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: #12141f; }
-  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 9999px; }
+  ::-webkit-scrollbar-track { background: var(--surface); }
+  ::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 9999px; }
   ::-webkit-scrollbar-thumb:hover { background: rgba(100,112,241,0.4); }
 }
 
 @layer components {
-  .card { background-color: #12141f; border: 1px solid rgba(255,255,255,0.05); border-radius: 1rem; }
+  .card {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+  }
   .card-hover { transition: all 0.2s; }
-  .card-hover:hover { border-color: rgba(100,112,241,0.3); box-shadow: 0 0 10px rgba(100,112,241,0.2); }
-  .btn-primary { background-color: #4f52e5; color: white; font-weight: 500; padding: 0.5rem 1rem; border-radius: 0.75rem; transition: all 0.15s; display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; border: none; cursor: pointer; }
-  .btn-primary:hover { background-color: #6470f1; }
-  .btn-secondary { background-color: rgba(255,255,255,0.05); color: rgba(255,255,255,0.8); font-weight: 500; padding: 0.5rem 1rem; border-radius: 0.75rem; transition: all 0.15s; display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; }
-  .btn-secondary:hover { background-color: rgba(255,255,255,0.1); color: white; }
-  .btn-ghost { color: rgba(255,255,255,0.6); padding: 0.5rem 0.75rem; border-radius: 0.75rem; transition: all 0.15s; display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; background: none; border: none; cursor: pointer; }
-  .btn-ghost:hover { background-color: rgba(255,255,255,0.05); color: white; }
-  .input { background-color: #1a1d2e; border: 1px solid rgba(255,255,255,0.1); border-radius: 0.75rem; padding: 0.625rem 1rem; font-size: 0.875rem; color: white; outline: none; width: 100%; transition: all 0.15s; }
-  .input::placeholder { color: rgba(255,255,255,0.3); }
-  .input:focus { border-color: rgba(100,112,241,0.5); box-shadow: 0 0 0 2px rgba(100,112,241,0.1); }
-  .badge { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.125rem 0.5rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; }
-  .section-title { font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 1.125rem; color: white; }
-  .label { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em; }
+  .card-hover:hover {
+    border-color: rgba(100,112,241,0.3);
+    box-shadow: 0 0 10px rgba(100,112,241,0.2);
+  }
+  .btn-primary {
+    background-color: var(--primary);
+    color: white;
+    font-weight: 500; padding: 0.5rem 1rem;
+    border-radius: 0.75rem; transition: all 0.15s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.875rem; border: none; cursor: pointer;
+  }
+  .btn-primary:hover { filter: brightness(1.1); }
+  .btn-secondary {
+    background-color: var(--surface2);
+    color: var(--text2);
+    font-weight: 500; padding: 0.5rem 1rem;
+    border-radius: 0.75rem; transition: all 0.15s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.875rem;
+    border: 1px solid var(--border2);
+    cursor: pointer;
+  }
+  .btn-secondary:hover { background-color: var(--border2); color: var(--text); }
+  .btn-ghost {
+    color: var(--muted);
+    padding: 0.5rem 0.75rem; border-radius: 0.75rem;
+    transition: all 0.15s; display: inline-flex;
+    align-items: center; gap: 0.5rem;
+    font-size: 0.875rem; background: none; border: none; cursor: pointer;
+  }
+  .btn-ghost:hover { background-color: var(--border); color: var(--text); }
+  .input {
+    background-color: var(--input-bg);
+    border: 1px solid var(--border2);
+    border-radius: 0.75rem; padding: 0.625rem 1rem;
+    font-size: 0.875rem; color: var(--text);
+    outline: none; width: 100%; transition: all 0.15s;
+  }
+  .input::placeholder { color: var(--muted); }
+  .input:focus {
+    border-color: rgba(100,112,241,0.5);
+    box-shadow: 0 0 0 2px rgba(100,112,241,0.1);
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 0.25rem;
+    padding: 0.125rem 0.5rem; border-radius: 9999px;
+    font-size: 0.75rem; font-weight: 500;
+  }
+  .section-title {
+    font-family: 'Outfit', sans-serif; font-weight: 600;
+    font-size: 1.125rem; color: var(--text);
+  }
+  .label {
+    font-size: 0.75rem; font-weight: 500; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  /* Carte générique adaptée au thème */
+  .theme-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    color: var(--text);
+  }
+  .theme-text { color: var(--text); }
+  .theme-muted { color: var(--muted); }
+  .theme-bg { background: var(--bg); }
+  .theme-surface { background: var(--surface); }
+  .theme-border { border-color: var(--border); }
 }
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }

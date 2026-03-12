@@ -126,12 +126,12 @@ export default function Dashboard({ lang, user, stats = {}, onNavigate, addLog, 
       {/* ONBOARDING */}
       {!onboardingDone && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200, padding: 24 }}>
-          <div style={{ background: '#12141f', border: '1px solid rgba(100,112,241,0.3)', borderRadius: 24, padding: 40, maxWidth: 480, width: '100%', boxShadow: '0 0 60px rgba(100,112,241,0.15)', textAlign: 'center' }}>
+          <div style={{ background: 'var(--surface)', border: '1px solid rgba(100,112,241,0.3)', borderRadius: 24, padding: 40, maxWidth: 480, width: '100%', boxShadow: '0 0 60px rgba(100,112,241,0.15)', textAlign: 'center' }}>
             <div style={{ fontSize: 60, marginBottom: 20 }}>{ONBOARDING_STEPS[onboardingStep].icon}</div>
-            <h2 style={{ margin: '0 0 12px', fontFamily: 'Outfit', fontWeight: 700, fontSize: 22, color: 'white' }}>
+            <h2 style={{ margin: '0 0 12px', fontFamily: 'Outfit', fontWeight: 700, fontSize: 22, color: 'var(--text)' }}>
               {isFr ? ONBOARDING_STEPS[onboardingStep].titleFr : ONBOARDING_STEPS[onboardingStep].titleEn}
             </h2>
-            <p style={{ margin: '0 0 28px', color: 'rgba(255,255,255,0.6)', fontSize: 14, lineHeight: 1.7 }}>
+            <p style={{ margin: '0 0 28px', color: 'var(--muted)', fontSize: 14, lineHeight: 1.7 }}>
               {isFr ? ONBOARDING_STEPS[onboardingStep].descFr : ONBOARDING_STEPS[onboardingStep].descEn}
             </p>
             <div style={{ display: 'flex', justifyContent: 'center', gap: 6, marginBottom: 28 }}>
@@ -163,10 +163,10 @@ export default function Dashboard({ lang, user, stats = {}, onNavigate, addLog, 
       {/* BRIEFING MODAL */}
       {showBriefing && briefing && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 24 }}>
-          <div style={{ background: '#12141f', border: '1px solid rgba(100,112,241,0.3)', borderRadius: 20, padding: 32, maxWidth: 540, width: '100%', boxShadow: '0 0 40px rgba(100,112,241,0.2)' }}>
+          <div style={{ background: 'var(--surface)', border: '1px solid rgba(100,112,241,0.3)', borderRadius: 20, padding: 32, maxWidth: 540, width: '100%', boxShadow: '0 0 40px rgba(100,112,241,0.2)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
               <span style={{ fontSize: 32 }}>🌅</span>
-              <h2 style={{ margin: 0, fontFamily: 'Outfit', fontWeight: 700, fontSize: 20, color: 'white' }}>
+              <h2 style={{ margin: 0, fontFamily: 'Outfit', fontWeight: 700, fontSize: 20, color: 'var(--text)' }}>
                 {isFr ? 'Briefing du jour' : "Today's briefing"}
               </h2>
             </div>
@@ -181,8 +181,8 @@ export default function Dashboard({ lang, user, stats = {}, onNavigate, addLog, 
       {/* HEADER */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
         <div>
-          <h2 style={{ margin: 0, fontFamily: 'Outfit', fontWeight: 700, fontSize: 22, color: 'white' }}>{greeting()}</h2>
-          <p style={{ margin: '4px 0 0', color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>
+          <h2 style={{ margin: 0, fontFamily: 'Outfit', fontWeight: 700, fontSize: 22, color: 'var(--text)' }}>{greeting()}</h2>
+          <p style={{ margin: '4px 0 0', color: 'var(--muted)', fontSize: 13 }}>
             {new Date().toLocaleDateString(isFr ? 'fr-FR' : 'en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
           </p>
         </div>
@@ -203,7 +203,7 @@ export default function Dashboard({ lang, user, stats = {}, onNavigate, addLog, 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
         {STAT_CARDS.map(card => (
           <button key={card.id} onClick={() => onNavigate(card.id)} style={{
-            background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, padding: 18,
+            background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 18,
             cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s',
           }}
           onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(100,112,241,0.3)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
@@ -211,16 +211,16 @@ export default function Dashboard({ lang, user, stats = {}, onNavigate, addLog, 
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
               <div style={{ width: 38, height: 38, borderRadius: 10, background: 'linear-gradient(135deg,' + card.colorFrom + '22,' + card.colorTo + '11)', border: '1px solid ' + card.colorFrom + '30', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>{card.icon}</div>
-              <span style={{ fontSize: 28, fontFamily: 'Outfit', fontWeight: 700, color: 'white' }}>{stats[card.key] ?? 0}</span>
+              <span style={{ fontSize: 28, fontFamily: 'Outfit', fontWeight: 700, color: 'var(--text)' }}>{stats[card.key] ?? 0}</span>
             </div>
-            <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', fontWeight: 500 }}>{isFr ? card.labelFr : card.labelEn}</div>
+            <div style={{ fontSize: 12, color: 'var(--muted)', fontWeight: 500 }}>{isFr ? card.labelFr : card.labelEn}</div>
           </button>
         ))}
       </div>
 
       {/* QUICK ACTIONS */}
       <div>
-        <div style={{ marginBottom: 10, fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+        <div style={{ marginBottom: 10, fontSize: 11, fontWeight: 700, color: 'var(--muted2)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
           {isFr ? '⚡ Actions rapides' : '⚡ Quick actions'}
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
@@ -242,13 +242,13 @@ export default function Dashboard({ lang, user, stats = {}, onNavigate, addLog, 
       </div>
 
       {/* AI CHAT */}
-      <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, overflow: 'hidden' }}>
-        <div style={{ padding: '14px 18px', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden' }}>
+        <div style={{ padding: '14px 18px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#10b981', boxShadow: '0 0 6px #10b981' }} />
-            <span style={{ fontFamily: 'Outfit', fontWeight: 600, fontSize: 14, color: 'white' }}>🤖 Aria AI</span>
+            <span style={{ fontFamily: 'Outfit', fontWeight: 600, fontSize: 14, color: 'var(--text)' }}>🤖 Aria AI</span>
           </div>
-          <button onClick={() => setAiHistory([])} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.3)', fontSize: 11 }}>
+          <button onClick={() => setAiHistory([])} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted2)', fontSize: 11 }}>
             {isFr ? 'Effacer' : 'Clear'}
           </button>
         </div>
@@ -285,7 +285,7 @@ export default function Dashboard({ lang, user, stats = {}, onNavigate, addLog, 
           </div>
         )}
 
-        <div style={{ padding: '12px 14px', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', gap: 8 }}>
+        <div style={{ padding: '12px 14px', borderTop: '1px solid var(--border)', display: 'flex', gap: 8 }}>
           <input className="input" value={aiInput} onChange={e => setAiInput(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && !e.shiftKey && sendMessage()}
             placeholder={listening ? (isFr ? '🎙️ Dictée en cours... (cliquez stop pour terminer)' : '🎙️ Listening... (click stop to finish)') : (isFr ? 'Demandez quelque chose à Aria...' : 'Ask Aria something...')}

@@ -165,24 +165,24 @@ export default function AccountingView({ lang, addLog, triggerSave }) {
       {/* OCR MODAL */}
       {showOcr && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 24 }}>
-          <div style={{ background: '#12141f', border: '1px solid rgba(100,112,241,0.3)', borderRadius: 20, padding: 28, maxWidth: 520, width: '100%' }}>
+          <div style={{ background: 'var(--surface)', border: '1px solid rgba(100,112,241,0.3)', borderRadius: 20, padding: 28, maxWidth: 520, width: '100%' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
               <span style={{ fontSize: 28 }}>📄</span>
-              <h3 style={{ margin: 0, fontFamily: 'Outfit', fontWeight: 700, color: 'white', fontSize: 18 }}>
+              <h3 style={{ margin: 0, fontFamily: 'Outfit', fontWeight: 700, color: 'var(--text)', fontSize: 18 }}>
                 {isFr ? 'Scan OCR — Extraction automatique' : 'OCR Scan — Auto extraction'}
               </h3>
             </div>
             {ocrLoading ? (
               <div style={{ textAlign: 'center', padding: 40 }}>
                 <div style={{ fontSize: 40, marginBottom: 12 }}>🔍</div>
-                <p style={{ color: 'rgba(255,255,255,0.6)' }}>{isFr ? 'Analyse de la facture en cours...' : 'Analyzing invoice...'}</p>
+                <p style={{ color: 'var(--muted)' }}>{isFr ? 'Analyse de la facture en cours...' : 'Analyzing invoice...'}</p>
               </div>
             ) : ocrResult ? (
               <div>
                 {ocrResult.error ? (
                   <p style={{ color: '#ef4444' }}>{ocrResult.error}</p>
                 ) : ocrResult.raw ? (
-                  <pre style={{ color: 'rgba(255,255,255,0.7)', fontSize: 12, whiteSpace: 'pre-wrap' }}>{ocrResult.raw}</pre>
+                  <pre style={{ color: 'var(--text2)', fontSize: 12, whiteSpace: 'pre-wrap' }}>{ocrResult.raw}</pre>
                 ) : (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 20 }}>
                     {[
@@ -194,8 +194,8 @@ export default function AccountingView({ lang, addLog, triggerSave }) {
                       { label: isFr ? 'Catégorie' : 'Category', value: ocrResult.category },
                     ].map(f => f.value ? (
                       <div key={f.label} style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-                        <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', minWidth: 80 }}>{f.label}</span>
-                        <span style={{ fontSize: 14, color: 'white', fontWeight: 500 }}>{f.value}</span>
+                        <span style={{ fontSize: 12, color: 'var(--muted)', minWidth: 80 }}>{f.label}</span>
+                        <span style={{ fontSize: 14, color: 'var(--text)', fontWeight: 500 }}>{f.value}</span>
                       </div>
                     ) : null)}
                   </div>
@@ -224,8 +224,8 @@ export default function AccountingView({ lang, addLog, triggerSave }) {
           { label: isFr ? 'En retard' : 'Overdue', value: totalOverdue.toLocaleString('fr-FR') + '€', color: '#ef4444' },
           { label: isFr ? 'Dépenses' : 'Expenses', value: totalExpenses.toLocaleString('fr-FR') + '€', color: '#6470f1' },
         ].map(s => (
-          <div key={s.label} style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 14, padding: '14px 16px' }}>
-            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginBottom: 8 }}>{s.label}</div>
+          <div key={s.label} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 14, padding: '14px 16px' }}>
+            <div style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 8 }}>{s.label}</div>
             <div style={{ fontSize: 22, fontFamily: 'Outfit', fontWeight: 700, color: s.color }}>{s.value}</div>
           </div>
         ))}
@@ -280,22 +280,22 @@ export default function AccountingView({ lang, addLog, triggerSave }) {
           {invoices.map(inv => {
             const sc = STATUS_CONFIG[inv.status]
             return (
-              <div key={inv.id} style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 12, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+              <div key={inv.id} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
                 <div style={{ flex: 1, minWidth: 150 }}>
-                  <div style={{ fontWeight: 600, color: 'white', fontSize: 13 }}>{inv.client}</div>
-                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginTop: 2 }}>{inv.number} · {inv.category} · {inv.date}</div>
+                  <div style={{ fontWeight: 600, color: 'var(--text)', fontSize: 13 }}>{inv.client}</div>
+                  <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2 }}>{inv.number} · {inv.category} · {inv.date}</div>
                 </div>
-                <div style={{ fontSize: 18, fontFamily: 'Outfit', fontWeight: 700, color: 'white' }}>{inv.amount.toLocaleString('fr-FR')}€</div>
+                <div style={{ fontSize: 18, fontFamily: 'Outfit', fontWeight: 700, color: 'var(--text)' }}>{inv.amount.toLocaleString('fr-FR')}€</div>
                 <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 99, background: sc.bg, color: sc.color, border: '1px solid ' + sc.color + '40' }}>
                   {isFr ? sc.labelFr : sc.labelEn}
                 </span>
                 <div style={{ display: 'flex', gap: 4 }}>
-                  <button onClick={() => handleExportInvoice(inv)} title={isFr ? 'Exporter en PDF' : 'Export as PDF'} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.4)', fontSize: 14 }}
+                  <button onClick={() => handleExportInvoice(inv)} title={isFr ? 'Exporter en PDF' : 'Export as PDF'} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted)', fontSize: 14 }}
                     onMouseEnter={e => e.currentTarget.style.color = '#f87171'}
                     onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.4)'}
                   >🖨️</button>
-                  <button onClick={() => { setEditItem(inv); setShowModal(true) }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.4)', fontSize: 14 }}>✏️</button>
-                  <button onClick={() => deleteItem(inv.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.3)', fontSize: 14 }}
+                  <button onClick={() => { setEditItem(inv); setShowModal(true) }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted)', fontSize: 14 }}>✏️</button>
+                  <button onClick={() => deleteItem(inv.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted2)', fontSize: 14 }}
                     onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}
                     onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.3)'}
                   >🗑️</button>
@@ -310,15 +310,15 @@ export default function AccountingView({ lang, addLog, triggerSave }) {
       {activeTab === 'expenses' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {expenses.map(exp => (
-            <div key={exp.id} style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 12, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+            <div key={exp.id} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
               <div style={{ flex: 1, minWidth: 150 }}>
-                <div style={{ fontWeight: 600, color: 'white', fontSize: 13 }}>{exp.desc}</div>
-                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginTop: 2 }}>{exp.category} · {exp.date}</div>
+                <div style={{ fontWeight: 600, color: 'var(--text)', fontSize: 13 }}>{exp.desc}</div>
+                <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2 }}>{exp.category} · {exp.date}</div>
               </div>
               <div style={{ fontSize: 18, fontFamily: 'Outfit', fontWeight: 700, color: '#ef4444' }}>-{exp.amount.toLocaleString('fr-FR')}€</div>
               <div style={{ display: 'flex', gap: 4 }}>
-                <button onClick={() => { setEditItem(exp); setShowModal(true) }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.4)', fontSize: 14 }}>✏️</button>
-                <button onClick={() => deleteItem(exp.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.3)', fontSize: 14 }}
+                <button onClick={() => { setEditItem(exp); setShowModal(true) }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted)', fontSize: 14 }}>✏️</button>
+                <button onClick={() => deleteItem(exp.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted2)', fontSize: 14 }}
                   onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}
                   onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.3)'}
                 >🗑️</button>
@@ -330,11 +330,11 @@ export default function AccountingView({ lang, addLog, triggerSave }) {
 
       {/* REPORT */}
       {activeTab === 'report' && (
-        <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, padding: 20, minHeight: 200 }}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 20, minHeight: 200 }}>
           {aiReport ? (
             <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.75)', lineHeight: 1.8, whiteSpace: 'pre-wrap' }}>{aiReport}</div>
           ) : (
-            <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.3)', paddingTop: 60 }}>
+            <div style={{ textAlign: 'center', color: 'var(--muted2)', paddingTop: 60 }}>
               <div style={{ fontSize: 40, marginBottom: 12 }}>📊</div>
               <p>{isFr ? 'Cliquez sur "Générer rapport" pour une analyse IA' : 'Click "Generate report" for AI analysis'}</p>
             </div>
@@ -345,8 +345,8 @@ export default function AccountingView({ lang, addLog, triggerSave }) {
       {/* MODAL ADD/EDIT */}
       {showModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 24 }}>
-          <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 20, padding: 28, maxWidth: 440, width: '100%' }}>
-            <h3 style={{ margin: '0 0 20px', fontFamily: 'Outfit', fontWeight: 700, color: 'white', fontSize: 18 }}>
+          <div style={{ background: 'var(--surface)', border: '1px solid var(--border2)', borderRadius: 20, padding: 28, maxWidth: 440, width: '100%' }}>
+            <h3 style={{ margin: '0 0 20px', fontFamily: 'Outfit', fontWeight: 700, color: 'var(--text)', fontSize: 18 }}>
               {editItem?.id ? (isFr ? 'Modifier' : 'Edit') : (isFr ? 'Ajouter' : 'Add')}
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>

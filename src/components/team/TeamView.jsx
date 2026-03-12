@@ -60,14 +60,14 @@ export default function TeamView({ lang, user }) {
       {selectedRole && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 24 }}
           onClick={() => setSelectedRole(null)}>
-          <div style={{ background: '#12141f', border: '1px solid ' + ROLES[selectedRole].color + '44', borderRadius: 20, padding: 32, maxWidth: 500, width: '100%', boxShadow: '0 0 40px ' + ROLES[selectedRole].color + '22' }}
+          <div style={{ background: 'var(--surface)', border: '1px solid ' + ROLES[selectedRole].color + '44', borderRadius: 20, padding: 32, maxWidth: 500, width: '100%', boxShadow: '0 0 40px ' + ROLES[selectedRole].color + '22' }}
             onClick={e => e.stopPropagation()}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 20 }}>
               <div style={{ width: 56, height: 56, borderRadius: 16, background: ROLES[selectedRole].color + '22', border: '2px solid ' + ROLES[selectedRole].color + '44', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28 }}>
                 {ROLE_ICONS[selectedRole]}
               </div>
               <div>
-                <h3 style={{ margin: 0, fontFamily: 'Outfit', fontWeight: 700, color: 'white', fontSize: 20 }}>
+                <h3 style={{ margin: 0, fontFamily: 'Outfit', fontWeight: 700, color: 'var(--text)', fontSize: 20 }}>
                   {ROLES[selectedRole].label[lang] || ROLES[selectedRole].label.fr}
                 </h3>
                 <div style={{ fontSize: 12, color: ROLES[selectedRole].color, fontWeight: 600, marginTop: 2 }}>
@@ -79,7 +79,7 @@ export default function TeamView({ lang, user }) {
               {ROLE_DESCRIPTIONS[selectedRole]?.[lang] || ROLE_DESCRIPTIONS[selectedRole]?.fr}
             </p>
             <div style={{ marginBottom: 20 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.3)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--muted2)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>
                 {isFr ? 'Sections accessibles' : 'Accessible sections'}
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
@@ -98,8 +98,8 @@ export default function TeamView({ lang, user }) {
       )}
 
       {/* INVITE */}
-      <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, padding: 20 }}>
-        <h3 style={{ margin: '0 0 14px', fontFamily: 'Outfit', fontWeight: 600, color: 'white', fontSize: 15 }}>
+      <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 20 }}>
+        <h3 style={{ margin: '0 0 14px', fontFamily: 'Outfit', fontWeight: 600, color: 'var(--text)', fontSize: 15 }}>
           ➕ {isFr ? 'Inviter un membre' : 'Invite a member'}
         </h3>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -120,8 +120,8 @@ export default function TeamView({ lang, user }) {
       </div>
 
       {/* MEMBERS LIST */}
-      <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, overflow: 'hidden' }}>
-        <div style={{ padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.05)', fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+      <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden' }}>
+        <div style={{ padding: '14px 20px', borderBottom: '1px solid var(--border)', fontSize: 12, fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
           {allMembers.length} {isFr ? 'membres' : 'members'}
         </div>
         {allMembers.map(member => {
@@ -132,11 +132,11 @@ export default function TeamView({ lang, user }) {
                 {ROLE_ICONS[member.role] || (member.name || member.email || '?')[0].toUpperCase()}
               </div>
               <div style={{ flex: 1, minWidth: 150 }}>
-                <div style={{ fontWeight: 600, color: 'white', fontSize: 13 }}>
+                <div style={{ fontWeight: 600, color: 'var(--text)', fontSize: 13 }}>
                   {member.name || member.email}
                   {member.isCurrentUser && <span style={{ marginLeft: 8, fontSize: 10, fontWeight: 700, padding: '1px 6px', borderRadius: 99, background: 'rgba(100,112,241,0.2)', color: '#a5b8fc' }}>{isFr ? 'Vous' : 'You'}</span>}
                 </div>
-                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginTop: 1 }}>{member.email}</div>
+                <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 1 }}>{member.email}</div>
               </div>
               <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 99, background: member.status === 'active' ? 'rgba(16,185,129,0.15)' : 'rgba(245,158,11,0.15)', color: member.status === 'active' ? '#10b981' : '#f59e0b', border: '1px solid ' + (member.status === 'active' ? 'rgba(16,185,129,0.3)' : 'rgba(245,158,11,0.3)') }}>
                 {member.status === 'active' ? (isFr ? 'Actif' : 'Active') : (isFr ? 'Invité' : 'Invited')}
@@ -164,8 +164,8 @@ export default function TeamView({ lang, user }) {
       </div>
 
       {/* ROLES CLIQUABLES */}
-      <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, padding: 20 }}>
-        <div style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 14 }}>
+      <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 20 }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 14 }}>
           🔑 {isFr ? 'Rôles disponibles — cliquez pour voir le détail' : 'Available roles — click to see details'}
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 10 }}>

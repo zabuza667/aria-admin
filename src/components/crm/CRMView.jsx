@@ -61,8 +61,8 @@ export default function CRMView({ lang, addLog, triggerSave }) {
           { label: isFr ? '🎯 Prospects' : '🎯 Prospects', value: contacts.filter(c => c.type === 'prospect').length, color: '#f59e0b' },
           { label: isFr ? '🤝 Partenaires' : '🤝 Partners', value: contacts.filter(c => c.type === 'partner').length, color: '#ec4899' },
         ].map(stat => (
-          <div key={stat.label} style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 14, padding: 14 }}>
-            <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)', marginBottom: 6 }}>{stat.label}</div>
+          <div key={stat.label} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 14, padding: 14 }}>
+            <div style={{ fontSize: 10, color: 'var(--muted)', marginBottom: 6 }}>{stat.label}</div>
             <div style={{ fontSize: 28, fontFamily: 'Outfit', fontWeight: 700, color: stat.color }}>{stat.value}</div>
           </div>
         ))}
@@ -88,7 +88,7 @@ export default function CRMView({ lang, addLog, triggerSave }) {
       {/* List */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
         {filtered.map(contact => (
-          <div key={contact.id} style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 14, padding: 16, display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}
+          <div key={contact.id} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 14, padding: 16, display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}
             onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(100,112,241,0.2)'}
             onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)'}
           >
@@ -96,8 +96,8 @@ export default function CRMView({ lang, addLog, triggerSave }) {
               {contact.name[0]}
             </div>
             <div style={{ flex: 1, minWidth: 180 }}>
-              <div style={{ fontWeight: 600, color: 'white', marginBottom: 2 }}>{contact.name}</div>
-              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)' }}>{contact.company} · {contact.email}</div>
+              <div style={{ fontWeight: 600, color: 'var(--text)', marginBottom: 2 }}>{contact.name}</div>
+              <div style={{ fontSize: 12, color: 'var(--muted)' }}>{contact.company} · {contact.email}</div>
             </div>
             <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
               <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 99, background: typeColor(contact.type) + '22', color: typeColor(contact.type), border: '1px solid ' + typeColor(contact.type) + '44' }}>
@@ -106,11 +106,11 @@ export default function CRMView({ lang, addLog, triggerSave }) {
               <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 99, background: statusColor(contact.status) + '22', color: statusColor(contact.status), border: '1px solid ' + statusColor(contact.status) + '44' }}>
                 {statusLabel(contact.status)}
               </span>
-              <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)' }}>📅 {contact.lastContact}</span>
+              <span style={{ fontSize: 10, color: 'var(--muted2)' }}>📅 {contact.lastContact}</span>
             </div>
             <div style={{ display: 'flex', gap: 4 }}>
-              <button onClick={() => aiAnalyzeContact(contact)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.3)', fontSize: 14 }} title="AI analyze">🤖</button>
-              <button onClick={() => { setEditContact({ ...contact }); setShowModal(true) }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.3)', fontSize: 14 }}>✏️</button>
+              <button onClick={() => aiAnalyzeContact(contact)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted2)', fontSize: 14 }} title="AI analyze">🤖</button>
+              <button onClick={() => { setEditContact({ ...contact }); setShowModal(true) }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted2)', fontSize: 14 }}>✏️</button>
               <button onClick={() => { setContacts(prev => prev.filter(c => c.id !== contact.id)); addLog?.('🗑️ Contact supprimé', 'info', 'crm') }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.2)', fontSize: 14 }}>🗑️</button>
             </div>
           </div>
@@ -121,15 +121,15 @@ export default function CRMView({ lang, addLog, triggerSave }) {
       {(aiNote || aiLoading) && (
         <div style={{ background: 'rgba(100,112,241,0.05)', border: '1px solid rgba(100,112,241,0.15)', borderRadius: 14, padding: 16 }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: '#a5b8fc', marginBottom: 8 }}>🤖 {isFr ? 'Analyse IA' : 'AI Analysis'}</div>
-          {aiLoading ? <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>{isFr ? 'Analyse en cours...' : 'Analyzing...'}</div> : <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{aiNote}</div>}
+          {aiLoading ? <div style={{ color: 'var(--muted)', fontSize: 13 }}>{isFr ? 'Analyse en cours...' : 'Analyzing...'}</div> : <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{aiNote}</div>}
         </div>
       )}
 
       {/* Modal */}
       {showModal && editContact && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 24 }}>
-          <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 20, padding: 28, width: '100%', maxWidth: 460 }}>
-            <h3 style={{ margin: '0 0 20px', fontFamily: 'Outfit', fontWeight: 600, color: 'white' }}>
+          <div style={{ background: 'var(--surface)', border: '1px solid var(--border2)', borderRadius: 20, padding: 28, width: '100%', maxWidth: 460 }}>
+            <h3 style={{ margin: '0 0 20px', fontFamily: 'Outfit', fontWeight: 600, color: 'var(--text)' }}>
               {editContact.id ? '✏️ ' + (isFr ? 'Modifier contact' : 'Edit contact') : '➕ ' + (isFr ? 'Nouveau contact' : 'New contact')}
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>

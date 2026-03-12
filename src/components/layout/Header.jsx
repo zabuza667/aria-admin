@@ -19,7 +19,7 @@ export default function Header({ section, lang, setLang, user, notifications = [
   return (
     <header style={{
       height: 58, display: 'flex', alignItems: 'center', padding: '0 20px', gap: 12,
-      borderBottom: '1px solid rgba(255,255,255,0.05)',
+      borderBottom: '1px solid var(--border)',
       background: darkMode ? 'rgba(10,11,18,0.85)' : 'rgba(255,255,255,0.85)',
       backdropFilter: 'blur(16px)', position: 'sticky', top: 0, zIndex: 40, transition: 'background 0.3s',
     }}>
@@ -88,7 +88,7 @@ export default function Header({ section, lang, setLang, user, notifications = [
             <span style={{
               position: 'absolute', top: -5, right: -5,
               background: 'linear-gradient(135deg, #ef4444, #f97316)',
-              color: 'white', borderRadius: 99, fontSize: 9, fontWeight: 700,
+              color: 'var(--text)', borderRadius: 99, fontSize: 9, fontWeight: 700,
               padding: '1px 5px', minWidth: 16, textAlign: 'center',
               boxShadow: '0 0 8px rgba(239,68,68,0.6)',
               animation: 'pulse 2s infinite',
@@ -101,7 +101,7 @@ export default function Header({ section, lang, setLang, user, notifications = [
           width: 32, height: 32, borderRadius: '50%',
           background: 'linear-gradient(135deg, #6470f1, #a5b8fc)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 13, fontWeight: 700, color: 'white', flexShrink: 0,
+          fontSize: 13, fontWeight: 700, color: 'var(--text)', flexShrink: 0,
         }}>
           {(user?.name || user?.email || 'A')[0].toUpperCase()}
         </div>

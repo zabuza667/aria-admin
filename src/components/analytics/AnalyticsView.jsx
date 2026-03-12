@@ -73,9 +73,9 @@ export default function AnalyticsView({ lang }) {
       {/* KPIs */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(170px, 1fr))', gap: 12 }}>
         {kpis.map(k => (
-          <div key={k.label} style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 14, padding: '14px 16px' }}>
-            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginBottom: 8 }}>{k.label}</div>
-            <div style={{ fontSize: 22, fontFamily: 'Outfit', fontWeight: 700, color: 'white', marginBottom: 4 }}>{k.value}</div>
+          <div key={k.label} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 14, padding: '14px 16px' }}>
+            <div style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 8 }}>{k.label}</div>
+            <div style={{ fontSize: 22, fontFamily: 'Outfit', fontWeight: 700, color: 'var(--text)', marginBottom: 4 }}>{k.value}</div>
             <div style={{ fontSize: 11, fontWeight: 700, color: k.up ? '#10b981' : '#ef4444' }}>
               {k.up ? '↑' : '↓'} {k.trend}
             </div>
@@ -99,8 +99,8 @@ export default function AnalyticsView({ lang }) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           {/* DONUT CHART - modernisé */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
-            <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, padding: 20 }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.7)', marginBottom: 16 }}>
+            <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 20 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text2)', marginBottom: 16 }}>
                 {isFr ? 'Répartition du temps' : 'Time breakdown'}
               </div>
               <ResponsiveContainer width="100%" height={220}>
@@ -118,14 +118,14 @@ export default function AnalyticsView({ lang }) {
                 {PIE_DATA.map(d => (
                   <div key={d.name} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
                     <div style={{ width: 8, height: 8, borderRadius: '50%', background: d.color }} />
-                    <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>{d.name}</span>
+                    <span style={{ fontSize: 11, color: 'var(--muted)' }}>{d.name}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, padding: 20 }}>
-              <div style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.7)', marginBottom: 16 }}>
+            <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 20 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text2)', marginBottom: 16 }}>
                 {isFr ? 'Activité mensuelle' : 'Monthly activity'}
               </div>
               <ResponsiveContainer width="100%" height={220}>
@@ -146,8 +146,8 @@ export default function AnalyticsView({ lang }) {
       {/* FINANCE */}
       {activeTab === 'finance' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, padding: 20 }}>
-            <div style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.7)', marginBottom: 16 }}>
+          <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 20 }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text2)', marginBottom: 16 }}>
               {isFr ? 'Revenus vs Dépenses' : 'Revenue vs Expenses'}
             </div>
             <ResponsiveContainer width="100%" height={260}>
@@ -166,7 +166,7 @@ export default function AnalyticsView({ lang }) {
                 <XAxis dataKey="month" tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 11 }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={v => (v/1000) + 'k'} />
                 <Tooltip contentStyle={TS.contentStyle} cursor={TS.cursor} formatter={v => v.toLocaleString('fr-FR') + '€'} />
-                <Legend wrapperStyle={{ color: 'rgba(255,255,255,0.5)', fontSize: 12 }} />
+                <Legend wrapperStyle={{ color: 'var(--muted)', fontSize: 12 }} />
                 <Area type="monotone" dataKey="revenue" name={isFr ? 'CA' : 'Revenue'} stroke="#10b981" strokeWidth={2} fill="url(#colorRev)" dot={{ r: 4, fill: '#10b981' }} />
                 <Area type="monotone" dataKey="expenses" name={isFr ? 'Dépenses' : 'Expenses'} stroke="#ef4444" strokeWidth={2} fill="url(#colorExp)" dot={{ r: 4, fill: '#ef4444' }} />
               </AreaChart>
@@ -174,8 +174,8 @@ export default function AnalyticsView({ lang }) {
           </div>
 
           {/* Donut catégories dépenses */}
-          <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, padding: 20 }}>
-            <div style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.7)', marginBottom: 16 }}>
+          <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 20 }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text2)', marginBottom: 16 }}>
               {isFr ? 'Répartition dépenses par catégorie' : 'Expenses by category'}
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
@@ -208,7 +208,7 @@ export default function AnalyticsView({ lang }) {
                     <div style={{ flex: 1, height: 6, borderRadius: 99, background: 'rgba(255,255,255,0.06)', overflow: 'hidden' }}>
                       <div style={{ width: item.pct + '%', height: '100%', background: item.color, borderRadius: 99 }} />
                     </div>
-                    <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', minWidth: 55 }}>{item.amount}</span>
+                    <span style={{ fontSize: 11, color: 'var(--muted)', minWidth: 55 }}>{item.amount}</span>
                     <span style={{ fontSize: 11, fontWeight: 700, color: item.color, minWidth: 28 }}>{item.pct}%</span>
                   </div>
                 ))}
@@ -220,8 +220,8 @@ export default function AnalyticsView({ lang }) {
 
       {/* PRODUCTIVITY */}
       {activeTab === 'productivity' && (
-        <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, padding: 20 }}>
-          <div style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.7)', marginBottom: 16 }}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 20 }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text2)', marginBottom: 16 }}>
             {isFr ? 'Évolution productivité' : 'Productivity trend'}
           </div>
           <ResponsiveContainer width="100%" height={280}>
@@ -230,7 +230,7 @@ export default function AnalyticsView({ lang }) {
               <XAxis dataKey="month" tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 11 }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 10 }} axisLine={false} tickLine={false} />
               <Tooltip contentStyle={TS.contentStyle} cursor={TS.cursor} />
-              <Legend wrapperStyle={{ color: 'rgba(255,255,255,0.5)', fontSize: 12 }} />
+              <Legend wrapperStyle={{ color: 'var(--muted)', fontSize: 12 }} />
               <Line type="monotone" dataKey="emails" name="Emails" stroke="#6470f1" strokeWidth={2.5} dot={{ r: 5, fill: '#6470f1', strokeWidth: 2, stroke: '#1a1d2e' }} activeDot={{ r: 7 }} />
               <Line type="monotone" dataKey="tasks" name={isFr ? 'Tâches' : 'Tasks'} stroke="#10b981" strokeWidth={2.5} dot={{ r: 5, fill: '#10b981', strokeWidth: 2, stroke: '#1a1d2e' }} activeDot={{ r: 7 }} />
             </LineChart>
@@ -240,9 +240,9 @@ export default function AnalyticsView({ lang }) {
 
       {/* AI INSIGHTS */}
       {activeTab === 'ai' && (
-        <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, padding: 24, minHeight: 200 }}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 24, minHeight: 200 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
-            <div style={{ fontSize: 14, fontWeight: 600, color: 'rgba(255,255,255,0.7)' }}>🤖 {isFr ? 'Analyse IA' : 'AI Analysis'}</div>
+            <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text2)' }}>🤖 {isFr ? 'Analyse IA' : 'AI Analysis'}</div>
             <button className="btn-primary" onClick={generateInsights} disabled={aiLoading} style={{ fontSize: 12 }}>
               {aiLoading ? '⏳ ...' : (isFr ? 'Générer les insights' : 'Generate insights')}
             </button>

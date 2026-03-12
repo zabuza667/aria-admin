@@ -125,16 +125,16 @@ export default function ExcelView({ lang, addLog }) {
 
       {/* Table tab */}
       {activeTab === 'table' && (
-        <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, overflow: 'hidden', flex: 1 }}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', flex: 1 }}>
           <div style={{ overflowX: 'auto', overflowY: 'auto', maxHeight: '100%' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
               <thead>
                 <tr>
-                  <th style={{ padding: '10px 12px', textAlign: 'left', fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.05em', background: '#0e1019', borderBottom: '1px solid rgba(255,255,255,0.05)', whiteSpace: 'nowrap' }}>#</th>
+                  <th style={{ padding: '10px 12px', textAlign: 'left', fontSize: 10, fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em', background: 'var(--bg2)', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>#</th>
                   {headers.map(h => (
-                    <th key={h} style={{ padding: '10px 12px', textAlign: 'left', fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.05em', background: '#0e1019', borderBottom: '1px solid rgba(255,255,255,0.05)', whiteSpace: 'nowrap' }}>{h}</th>
+                    <th key={h} style={{ padding: '10px 12px', textAlign: 'left', fontSize: 10, fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em', background: 'var(--bg2)', borderBottom: '1px solid var(--border)', whiteSpace: 'nowrap' }}>{h}</th>
                   ))}
-                  <th style={{ padding: '10px 12px', background: '#0e1019', borderBottom: '1px solid rgba(255,255,255,0.05)' }} />
+                  <th style={{ padding: '10px 12px', background: 'var(--bg2)', borderBottom: '1px solid var(--border)' }} />
                 </tr>
               </thead>
               <tbody>
@@ -143,7 +143,7 @@ export default function ExcelView({ lang, addLog }) {
                     onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}
                     onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                   >
-                    <td style={{ padding: '8px 12px', color: 'rgba(255,255,255,0.3)', fontSize: 11 }}>{ri + 1}</td>
+                    <td style={{ padding: '8px 12px', color: 'var(--muted2)', fontSize: 11 }}>{ri + 1}</td>
                     {headers.map(h => (
                       <td key={h} style={{ padding: '4px 8px' }}>
                         {editCell?.row === ri && editCell?.key === h ? (
@@ -157,7 +157,7 @@ export default function ExcelView({ lang, addLog }) {
                           />
                         ) : (
                           <div onClick={() => setEditCell({ row: ri, key: h })} style={{
-                            padding: '4px 8px', borderRadius: 6, cursor: 'text', color: 'rgba(255,255,255,0.8)',
+                            padding: '4px 8px', borderRadius: 6, cursor: 'text', color: 'var(--text2)',
                             fontWeight: typeof row[h] === 'number' ? 600 : 400,
                             color: typeof row[h] === 'number' ? '#a5b8fc' : 'rgba(255,255,255,0.8)',
                           }}>
@@ -194,7 +194,7 @@ export default function ExcelView({ lang, addLog }) {
 
       {/* Chart tab */}
       {activeTab === 'chart' && (
-        <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, padding: 20, flex: 1, display: 'flex', flexDirection: 'column', gap: 14 }}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 20, flex: 1, display: 'flex', flexDirection: 'column', gap: 14 }}>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
             {['bar', 'line', 'pie'].map(ct => (
               <button key={ct} onClick={() => setChartType(ct)} style={{
@@ -208,7 +208,7 @@ export default function ExcelView({ lang, addLog }) {
             <div style={{ marginLeft: 'auto', display: 'flex', gap: 4, flexWrap: 'wrap' }}>
               {numericKeys.map(k => (
                 <button key={k} onClick={() => setChartKeys(prev => prev.includes(k) ? prev.filter(x => x !== k) : [...prev, k])} style={{
-                  padding: '3px 10px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.1)', fontSize: 11, cursor: 'pointer',
+                  padding: '3px 10px', borderRadius: 6, border: '1px solid var(--border2)', fontSize: 11, cursor: 'pointer',
                   background: chartKeys.includes(k) ? COLORS[numericKeys.indexOf(k)] + '22' : 'transparent',
                   color: chartKeys.includes(k) ? COLORS[numericKeys.indexOf(k)] : 'rgba(255,255,255,0.4)',
                 }}>{k}</button>
@@ -223,7 +223,7 @@ export default function ExcelView({ lang, addLog }) {
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
                   <XAxis dataKey={xKey} tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 11 }} />
                   <YAxis tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 11 }} />
-                  <Tooltip contentStyle={{ background: '#1a1d2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, color: 'white' }} />
+                  <Tooltip contentStyle={{ background: 'var(--surface2)', border: '1px solid var(--border2)', borderRadius: 8, color: 'var(--text)' }} />
                   <Legend />
                   {chartKeys.map((k, i) => <Bar key={k} dataKey={k} fill={COLORS[i % COLORS.length]} radius={[4,4,0,0]} />)}
                 </BarChart>
@@ -232,7 +232,7 @@ export default function ExcelView({ lang, addLog }) {
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
                   <XAxis dataKey={xKey} tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 11 }} />
                   <YAxis tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 11 }} />
-                  <Tooltip contentStyle={{ background: '#1a1d2e', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, color: 'white' }} />
+                  <Tooltip contentStyle={{ background: 'var(--surface2)', border: '1px solid var(--border2)', borderRadius: 8, color: 'var(--text)' }} />
                   <Legend />
                   {chartKeys.map((k, i) => <Line key={k} type="monotone" dataKey={k} stroke={COLORS[i % COLORS.length]} strokeWidth={2} dot={{ r: 4, fill: COLORS[i % COLORS.length] }} />)}
                 </LineChart>
@@ -248,7 +248,7 @@ export default function ExcelView({ lang, addLog }) {
                     {data.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} stroke={COLORS[i % COLORS.length] + '40'} strokeWidth={2} />)}
                   </Pie>
                   <Tooltip contentStyle={{ background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: 10, color: '#1a1d2e', fontSize: 12, boxShadow: '0 8px 24px rgba(0,0,0,0.15)' }} />
-                  <Legend wrapperStyle={{ fontSize: 12, color: 'rgba(255,255,255,0.6)' }} />
+                  <Legend wrapperStyle={{ fontSize: 12, color: 'var(--muted)' }} />
                 </PieChart>
               )}
             </ResponsiveContainer>
@@ -258,8 +258,8 @@ export default function ExcelView({ lang, addLog }) {
 
       {/* AI tab */}
       {activeTab === 'ai' && (
-        <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, padding: 20, flex: 1, display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)' }}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 20, flex: 1, display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div style={{ fontSize: 14, color: 'var(--muted)' }}>
             {isFr ? '🤖 Demandez à Aria d\'analyser ou créer des tableaux Excel' : '🤖 Ask Aria to analyze or create Excel tables'}
           </div>
           <div style={{ display: 'flex', gap: 8 }}>
@@ -280,7 +280,7 @@ export default function ExcelView({ lang, addLog }) {
               isFr ? 'Identifie les anomalies' : 'Identify anomalies',
               isFr ? 'Crée un résumé' : 'Create a summary',
             ].map(s => (
-              <button key={s} className="btn-ghost" onClick={() => setAiRequest(s)} style={{ fontSize: 11, border: '1px solid rgba(255,255,255,0.08)', borderRadius: 8 }}>{s}</button>
+              <button key={s} className="btn-ghost" onClick={() => setAiRequest(s)} style={{ fontSize: 11, border: '1px solid var(--border2)', borderRadius: 8 }}>{s}</button>
             ))}
           </div>
         </div>

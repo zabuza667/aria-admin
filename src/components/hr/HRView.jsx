@@ -59,8 +59,8 @@ export default function HRView({ lang, addLog, triggerSave }) {
           { label: isFr ? '📄 CDI' : '📄 Permanent', value: employees.filter(e => e.contract === 'CDI').length, color: '#10b981' },
           { label: isFr ? '📋 CDD' : '📋 Contract', value: employees.filter(e => e.contract === 'CDD').length, color: '#ec4899' },
         ].map(stat => (
-          <div key={stat.label} style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 14, padding: 16 }}>
-            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', marginBottom: 8 }}>{stat.label}</div>
+          <div key={stat.label} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 14, padding: 16 }}>
+            <div style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 8 }}>{stat.label}</div>
             <div style={{ fontSize: 28, fontFamily: 'Outfit', fontWeight: 700, color: stat.color }}>{stat.value}</div>
           </div>
         ))}
@@ -86,23 +86,23 @@ export default function HRView({ lang, addLog, triggerSave }) {
       {activeTab === 'employees' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {employees.map(emp => (
-            <div key={emp.id} style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 14, padding: 16, display: 'flex', alignItems: 'center', gap: 16 }}>
-              <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'linear-gradient(135deg, #6470f1, #a5b8fc)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, fontWeight: 700, color: 'white', flexShrink: 0 }}>
+            <div key={emp.id} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 14, padding: 16, display: 'flex', alignItems: 'center', gap: 16 }}>
+              <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'linear-gradient(135deg, #6470f1, #a5b8fc)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, fontWeight: 700, color: 'var(--text)', flexShrink: 0 }}>
                 {emp.name[0]}
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontWeight: 600, color: 'white', marginBottom: 2 }}>{emp.name}</div>
-                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)' }}>{emp.role} · {emp.email}</div>
+                <div style={{ fontWeight: 600, color: 'var(--text)', marginBottom: 2 }}>{emp.name}</div>
+                <div style={{ fontSize: 12, color: 'var(--muted)' }}>{emp.role} · {emp.email}</div>
               </div>
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginBottom: 2 }}>{isFr ? 'Contrat' : 'Contract'}</div>
+                <div style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 2 }}>{isFr ? 'Contrat' : 'Contract'}</div>
                 <span style={{ fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 99, background: emp.contract === 'CDI' ? 'rgba(16,185,129,0.2)' : 'rgba(245,158,11,0.2)', color: emp.contract === 'CDI' ? '#10b981' : '#f59e0b' }}>{emp.contract}</span>
               </div>
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginBottom: 2 }}>{isFr ? 'Congés' : 'Leave'}</div>
+                <div style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 2 }}>{isFr ? 'Congés' : 'Leave'}</div>
                 <div style={{ fontSize: 20, fontFamily: 'Outfit', fontWeight: 700, color: '#a5b8fc' }}>{emp.leaveBalance}j</div>
               </div>
-              <button onClick={() => { setEditItem({ ...emp }); setShowModal(true) }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.3)', fontSize: 16 }}>✏️</button>
+              <button onClick={() => { setEditItem({ ...emp }); setShowModal(true) }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted2)', fontSize: 16 }}>✏️</button>
             </div>
           ))}
         </div>
@@ -112,11 +112,11 @@ export default function HRView({ lang, addLog, triggerSave }) {
       {activeTab === 'leaves' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {leaves.map(leave => (
-            <div key={leave.id} style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 14, padding: 16, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+            <div key={leave.id} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 14, padding: 16, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
               <div style={{ flex: 1, minWidth: 200 }}>
-                <div style={{ fontWeight: 600, color: 'white', marginBottom: 2 }}>{leave.employee}</div>
-                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)' }}>{leave.type} · {leave.from} → {leave.to} ({leave.days}j)</div>
-                {leave.reason && <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', marginTop: 2 }}>{leave.reason}</div>}
+                <div style={{ fontWeight: 600, color: 'var(--text)', marginBottom: 2 }}>{leave.employee}</div>
+                <div style={{ fontSize: 12, color: 'var(--muted)' }}>{leave.type} · {leave.from} → {leave.to} ({leave.days}j)</div>
+                {leave.reason && <div style={{ fontSize: 11, color: 'var(--muted2)', marginTop: 2 }}>{leave.reason}</div>}
               </div>
               <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 99, background: statusColor(leave.status) + '22', color: statusColor(leave.status), border: '1px solid ' + statusColor(leave.status) + '44' }}>
                 {statusLabel(leave.status)}
@@ -134,11 +134,11 @@ export default function HRView({ lang, addLog, triggerSave }) {
 
       {/* AI */}
       {activeTab === 'ai' && (
-        <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, padding: 20, minHeight: 200 }}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 20, minHeight: 200 }}>
           {aiAnalysis ? (
             <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.75)', lineHeight: 1.8, whiteSpace: 'pre-wrap' }}>{aiAnalysis}</div>
           ) : (
-            <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.3)', paddingTop: 60 }}>
+            <div style={{ textAlign: 'center', color: 'var(--muted2)', paddingTop: 60 }}>
               <div style={{ fontSize: 40, marginBottom: 12 }}>👥</div>
               <p>{isFr ? 'Cliquez sur Analyser pour obtenir des insights RH' : 'Click Analyze for HR insights'}</p>
             </div>
@@ -149,8 +149,8 @@ export default function HRView({ lang, addLog, triggerSave }) {
       {/* Modal */}
       {showModal && editItem && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 24 }}>
-          <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 20, padding: 28, width: '100%', maxWidth: 440 }}>
-            <h3 style={{ margin: '0 0 20px', fontFamily: 'Outfit', fontWeight: 600, color: 'white' }}>
+          <div style={{ background: 'var(--surface)', border: '1px solid var(--border2)', borderRadius: 20, padding: 28, width: '100%', maxWidth: 440 }}>
+            <h3 style={{ margin: '0 0 20px', fontFamily: 'Outfit', fontWeight: 600, color: 'var(--text)' }}>
               {editItem.id ? '✏️ ' + (isFr ? 'Modifier' : 'Edit') : '➕ ' + (isFr ? 'Ajouter' : 'Add')}
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -161,13 +161,13 @@ export default function HRView({ lang, addLog, triggerSave }) {
                   <input className="input" placeholder="Email" type="email" value={editItem.email || ''} onChange={e => setEditItem(p => ({ ...p, email: e.target.value }))} />
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
                     <div>
-                      <label style={{ display: 'block', fontSize: 11, color: 'rgba(255,255,255,0.4)', marginBottom: 4 }}>{isFr ? 'Contrat' : 'Contract'}</label>
+                      <label style={{ display: 'block', fontSize: 11, color: 'var(--muted)', marginBottom: 4 }}>{isFr ? 'Contrat' : 'Contract'}</label>
                       <select className="input" value={editItem.contract || 'CDI'} onChange={e => setEditItem(p => ({ ...p, contract: e.target.value }))}>
                         <option>CDI</option><option>CDD</option><option>Stage</option><option>Freelance</option>
                       </select>
                     </div>
                     <div>
-                      <label style={{ display: 'block', fontSize: 11, color: 'rgba(255,255,255,0.4)', marginBottom: 4 }}>{isFr ? 'Solde congés' : 'Leave balance'}</label>
+                      <label style={{ display: 'block', fontSize: 11, color: 'var(--muted)', marginBottom: 4 }}>{isFr ? 'Solde congés' : 'Leave balance'}</label>
                       <input className="input" type="number" value={editItem.leaveBalance || 0} onChange={e => setEditItem(p => ({ ...p, leaveBalance: Number(e.target.value) }))} />
                     </div>
                   </div>
@@ -180,11 +180,11 @@ export default function HRView({ lang, addLog, triggerSave }) {
                   </select>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
                     <div>
-                      <label style={{ display: 'block', fontSize: 11, color: 'rgba(255,255,255,0.4)', marginBottom: 4 }}>{isFr ? 'Du' : 'From'}</label>
+                      <label style={{ display: 'block', fontSize: 11, color: 'var(--muted)', marginBottom: 4 }}>{isFr ? 'Du' : 'From'}</label>
                       <input className="input" type="date" value={editItem.from || ''} onChange={e => setEditItem(p => ({ ...p, from: e.target.value }))} />
                     </div>
                     <div>
-                      <label style={{ display: 'block', fontSize: 11, color: 'rgba(255,255,255,0.4)', marginBottom: 4 }}>{isFr ? 'Au' : 'To'}</label>
+                      <label style={{ display: 'block', fontSize: 11, color: 'var(--muted)', marginBottom: 4 }}>{isFr ? 'Au' : 'To'}</label>
                       <input className="input" type="date" value={editItem.to || ''} onChange={e => setEditItem(p => ({ ...p, to: e.target.value }))} />
                     </div>
                   </div>

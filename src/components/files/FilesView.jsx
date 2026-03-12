@@ -95,7 +95,7 @@ export default function FilesView({ lang, addLog, triggerSave }) {
             }}>{cat === 'all' ? (isFr ? 'Tous' : 'All') : cat}</button>
           ))}
         </div>
-        <div style={{ marginLeft: 'auto', fontSize: 12, color: 'rgba(255,255,255,0.3)' }}>
+        <div style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--muted2)' }}>
           {filtered.length} {isFr ? 'fichiers' : 'files'}
         </div>
       </div>
@@ -106,7 +106,7 @@ export default function FilesView({ lang, addLog, triggerSave }) {
           const ext = EXT_CONFIG[file.type] || EXT_CONFIG.default
           return (
             <div key={file.id} style={{
-              background: '#12141f', border: '1px solid rgba(255,255,255,0.05)',
+              background: 'var(--surface)', border: '1px solid var(--border)',
               borderRadius: 12, padding: '12px 16px',
               display: 'flex', alignItems: 'center', gap: 14, transition: 'all 0.15s',
             }}
@@ -117,8 +117,8 @@ export default function FilesView({ lang, addLog, triggerSave }) {
                 {ext.icon}
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontWeight: 600, color: 'white', fontSize: 13, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{file.name}</div>
-                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', marginTop: 2 }}>
+                <div style={{ fontWeight: 600, color: 'var(--text)', fontSize: 13, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{file.name}</div>
+                <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2 }}>
                   {formatSize(file.size)} · {file.category} · {file.date} · {isFr ? 'par ' : 'by '}{file.uploadedBy}
                 </div>
               </div>
@@ -129,7 +129,7 @@ export default function FilesView({ lang, addLog, triggerSave }) {
                     const a = document.createElement('a')
                     a.href = url; a.download = file.name; a.click()
                     URL.revokeObjectURL(url)
-                  }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.3)', fontSize: 14 }} title={isFr ? 'Télécharger' : 'Download'}>⬇️</button>
+                  }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted2)', fontSize: 14 }} title={isFr ? 'Télécharger' : 'Download'}>⬇️</button>
                 )}
                 <button onClick={() => deleteFile(file.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.2)', fontSize: 14 }}
                   onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}

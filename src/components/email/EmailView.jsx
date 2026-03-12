@@ -72,7 +72,7 @@ export default function EmailView({ lang, user, addLog, triggerSave }) {
     <div style={{ display: 'flex', height: 'calc(100vh - 60px)', overflow: 'hidden' }}>
       {/* Email list */}
       <div style={{ width: 320, borderRight: '1px solid rgba(255,255,255,0.05)', display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
-        <div style={{ padding: 16, borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+        <div style={{ padding: 16, borderBottom: '1px solid var(--border)' }}>
           <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
             <button className="btn-primary" onClick={() => setShowCompose(true)} style={{ flex: 1, justifyContent: 'center', fontSize: 12 }}>
               ➕ {isFr ? 'Nouveau' : 'Compose'}
@@ -104,7 +104,7 @@ export default function EmailView({ lang, user, addLog, triggerSave }) {
                 <span style={{ fontSize: 12, fontWeight: email.read ? 400 : 700, color: email.read ? 'rgba(255,255,255,0.5)' : 'white', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 160 }}>
                   {email.fromName}
                 </span>
-                <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', flexShrink: 0 }}>
+                <span style={{ fontSize: 10, color: 'var(--muted2)', flexShrink: 0 }}>
                   {new Date(email.date).toLocaleDateString(isFr ? 'fr-FR' : 'en-US', { day: 'numeric', month: 'short' })}
                 </span>
               </div>
@@ -120,7 +120,7 @@ export default function EmailView({ lang, user, addLog, triggerSave }) {
                   border: '1px solid ' + priorityColor(email.priority) + '40',
                 }}>{priorityLabel(email.priority)}</span>
                 {email.labels?.map(l => (
-                  <span key={l} style={{ fontSize: 9, padding: '1px 5px', borderRadius: 99, background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.4)' }}>{l}</span>
+                  <span key={l} style={{ fontSize: 9, padding: '1px 5px', borderRadius: 99, background: 'rgba(255,255,255,0.06)', color: 'var(--muted)' }}>{l}</span>
                 ))}
               </div>
             </button>
@@ -138,12 +138,12 @@ export default function EmailView({ lang, user, addLog, triggerSave }) {
         ) : (
           <div style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
             {/* Header */}
-            <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, padding: 20 }}>
+            <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 20 }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 12 }}>
                 <div>
-                  <h3 style={{ margin: '0 0 6px', fontFamily: 'Outfit', fontWeight: 600, fontSize: 18, color: 'white' }}>{selected.subject}</h3>
-                  <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>
-                    <strong style={{ color: 'rgba(255,255,255,0.8)' }}>{selected.fromName}</strong> &lt;{selected.from}&gt;
+                  <h3 style={{ margin: '0 0 6px', fontFamily: 'Outfit', fontWeight: 600, fontSize: 18, color: 'var(--text)' }}>{selected.subject}</h3>
+                  <div style={{ fontSize: 13, color: 'var(--muted)' }}>
+                    <strong style={{ color: 'var(--text2)' }}>{selected.fromName}</strong> &lt;{selected.from}&gt;
                     <span style={{ marginLeft: 12 }}>{new Date(selected.date).toLocaleString(isFr ? 'fr-FR' : 'en-US')}</span>
                   </div>
                 </div>
@@ -156,21 +156,21 @@ export default function EmailView({ lang, user, addLog, triggerSave }) {
                   </button>
                 </div>
               </div>
-              <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.7)', lineHeight: 1.7, whiteSpace: 'pre-wrap', padding: '12px 0', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+              <div style={{ fontSize: 14, color: 'var(--text2)', lineHeight: 1.7, whiteSpace: 'pre-wrap', padding: '12px 0', borderTop: '1px solid var(--border)' }}>
                 {selected.body}
               </div>
             </div>
 
             {/* Analysis */}
             {analyzing && (
-              <div style={{ background: '#12141f', border: '1px solid rgba(100,112,241,0.2)', borderRadius: 16, padding: 20, textAlign: 'center', color: 'rgba(255,255,255,0.4)' }}>
+              <div style={{ background: 'var(--surface)', border: '1px solid rgba(100,112,241,0.2)', borderRadius: 16, padding: 20, textAlign: 'center', color: 'var(--muted)' }}>
                 <div style={{ fontSize: 24, marginBottom: 8 }}>🤖</div>
                 {isFr ? "L'IA analyse l'email..." : 'AI is analyzing...'}
               </div>
             )}
 
             {analysis && (
-              <div style={{ background: '#12141f', border: '1px solid rgba(100,112,241,0.2)', borderRadius: 16, padding: 20 }}>
+              <div style={{ background: 'var(--surface)', border: '1px solid rgba(100,112,241,0.2)', borderRadius: 16, padding: 20 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
                   <span style={{ fontSize: 16 }}>🤖</span>
                   <span style={{ fontFamily: 'Outfit', fontWeight: 600, color: '#a5b8fc' }}>
@@ -181,7 +181,7 @@ export default function EmailView({ lang, user, addLog, triggerSave }) {
 
                 {draftReply && (
                   <div>
-                    <div style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
+                    <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
                       {isFr ? '✉️ Brouillon de réponse' : '✉️ Reply draft'}
                     </div>
                     <textarea
@@ -206,8 +206,8 @@ export default function EmailView({ lang, user, addLog, triggerSave }) {
       {/* Compose modal */}
       {showCompose && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 24 }}>
-          <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 20, padding: 28, width: '100%', maxWidth: 520 }}>
-            <h3 style={{ margin: '0 0 20px', fontFamily: 'Outfit', fontWeight: 600, color: 'white' }}>
+          <div style={{ background: 'var(--surface)', border: '1px solid var(--border2)', borderRadius: 20, padding: 28, width: '100%', maxWidth: 520 }}>
+            <h3 style={{ margin: '0 0 20px', fontFamily: 'Outfit', fontWeight: 600, color: 'var(--text)' }}>
               ➕ {isFr ? 'Nouveau message' : 'New message'}
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>

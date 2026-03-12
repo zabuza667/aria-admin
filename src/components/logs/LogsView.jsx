@@ -46,7 +46,7 @@ export default function LogsView({ logs = [], setLogs, lang }) {
           const tc = TYPE_CONFIG[log.type] || TYPE_CONFIG.info
           return (
             <div key={log.id} style={{
-              background: '#12141f',
+              background: 'var(--surface)',
               border: '1px solid ' + tc.color + '22',
               borderLeft: '3px solid ' + tc.color,
               borderRadius: 10, padding: '10px 14px',
@@ -54,9 +54,9 @@ export default function LogsView({ logs = [], setLogs, lang }) {
               animation: 'fadeIn 0.2s ease',
             }}>
               <span style={{ fontSize: 14 }}>{tc.icon}</span>
-              <span style={{ flex: 1, fontSize: 13, color: 'rgba(255,255,255,0.8)' }}>{log.message}</span>
-              {log.section && <span style={{ fontSize: 10, padding: '1px 6px', borderRadius: 99, background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.3)' }}>{log.section}</span>}
-              <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', whiteSpace: 'nowrap', flexShrink: 0 }}>
+              <span style={{ flex: 1, fontSize: 13, color: 'var(--text2)' }}>{log.message}</span>
+              {log.section && <span style={{ fontSize: 10, padding: '1px 6px', borderRadius: 99, background: 'rgba(255,255,255,0.06)', color: 'var(--muted2)' }}>{log.section}</span>}
+              <span style={{ fontSize: 10, color: 'var(--muted2)', whiteSpace: 'nowrap', flexShrink: 0 }}>
                 {new Date(log.timestamp).toLocaleTimeString(isFr ? 'fr-FR' : 'en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
               </span>
             </div>
@@ -64,7 +64,7 @@ export default function LogsView({ logs = [], setLogs, lang }) {
         })}
       </div>
 
-      <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)', textAlign: 'center', flexShrink: 0 }}>
+      <div style={{ fontSize: 12, color: 'var(--muted2)', textAlign: 'center', flexShrink: 0 }}>
         {filtered.length} {isFr ? 'entrées' : 'entries'} {filter !== 'all' ? '(' + filter + ')' : ''}
       </div>
     </div>

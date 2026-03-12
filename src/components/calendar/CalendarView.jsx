@@ -86,7 +86,7 @@ export default function CalendarView({ lang, addLog, triggerSave }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <button className="btn-ghost" onClick={() => setCurrentDate(new Date(year, month - 1, 1))}>‹</button>
-          <span style={{ fontFamily: 'Outfit', fontWeight: 700, fontSize: 18, color: 'white', minWidth: 160, textAlign: 'center' }}>
+          <span style={{ fontFamily: 'Outfit', fontWeight: 700, fontSize: 18, color: 'var(--text)', minWidth: 160, textAlign: 'center' }}>
             {monthNames[month]} {year}
           </span>
           <button className="btn-ghost" onClick={() => setCurrentDate(new Date(year, month + 1, 1))}>›</button>
@@ -105,11 +105,11 @@ export default function CalendarView({ lang, addLog, triggerSave }) {
       </div>
 
       {/* Calendar grid */}
-      <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, overflow: 'hidden', flex: 1 }}>
+      <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden', flex: 1 }}>
         {/* Day headers */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', borderBottom: '1px solid var(--border)' }}>
           {dayNames.map(d => (
-            <div key={d} style={{ padding: '10px 8px', textAlign: 'center', fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{d}</div>
+            <div key={d} style={{ padding: '10px 8px', textAlign: 'center', fontSize: 11, fontWeight: 600, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{d}</div>
           ))}
         </div>
 
@@ -156,7 +156,7 @@ export default function CalendarView({ lang, addLog, triggerSave }) {
                       }}>{tc.icon} {ev.title}</div>
                     )
                   })}
-                  {dayEvents.length > 3 && <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.3)' }}>+{dayEvents.length - 3} {isFr ? 'autres' : 'more'}</div>}
+                  {dayEvents.length > 3 && <div style={{ fontSize: 9, color: 'var(--muted2)' }}>+{dayEvents.length - 3} {isFr ? 'autres' : 'more'}</div>}
                 </div>
                 {isSelected && (
                   <button onClick={e => { e.stopPropagation(); openNewEvent(day) }} style={{
@@ -173,25 +173,25 @@ export default function CalendarView({ lang, addLog, triggerSave }) {
       {/* Modal */}
       {showModal && editEvent && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 24 }}>
-          <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 20, padding: 28, width: '100%', maxWidth: 480 }}>
-            <h3 style={{ margin: '0 0 20px', fontFamily: 'Outfit', fontWeight: 600, color: 'white' }}>
+          <div style={{ background: 'var(--surface)', border: '1px solid var(--border2)', borderRadius: 20, padding: 28, width: '100%', maxWidth: 480 }}>
+            <h3 style={{ margin: '0 0 20px', fontFamily: 'Outfit', fontWeight: 600, color: 'var(--text)' }}>
               {editEvent.id ? '✏️ ' + (isFr ? 'Modifier' : 'Edit') : '➕ ' + (isFr ? 'Nouvel événement' : 'New event')}
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               <input className="input" placeholder={isFr ? 'Titre *' : 'Title *'} value={editEvent.title} onChange={e => setEditEvent(p => ({ ...p, title: e.target.value }))} />
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: 11, color: 'rgba(255,255,255,0.4)', marginBottom: 5 }}>{isFr ? 'Date *' : 'Date *'}</label>
+                  <label style={{ display: 'block', fontSize: 11, color: 'var(--muted)', marginBottom: 5 }}>{isFr ? 'Date *' : 'Date *'}</label>
                   <input className="input" type="date" value={editEvent.date} onChange={e => setEditEvent(p => ({ ...p, date: e.target.value }))} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: 11, color: 'rgba(255,255,255,0.4)', marginBottom: 5 }}>{isFr ? 'Heure' : 'Time'}</label>
+                  <label style={{ display: 'block', fontSize: 11, color: 'var(--muted)', marginBottom: 5 }}>{isFr ? 'Heure' : 'Time'}</label>
                   <input className="input" type="time" value={editEvent.time} onChange={e => setEditEvent(p => ({ ...p, time: e.target.value }))} />
                 </div>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: 11, color: 'rgba(255,255,255,0.4)', marginBottom: 5 }}>{isFr ? 'Type' : 'Type'}</label>
+                  <label style={{ display: 'block', fontSize: 11, color: 'var(--muted)', marginBottom: 5 }}>{isFr ? 'Type' : 'Type'}</label>
                   <select className="input" value={editEvent.type} onChange={e => setEditEvent(p => ({ ...p, type: e.target.value }))}>
                     {Object.entries(TYPE_CONFIG).map(([k, v]) => (
                       <option key={k} value={k}>{v.icon} {isFr ? v.label.fr : v.label.en}</option>
@@ -199,7 +199,7 @@ export default function CalendarView({ lang, addLog, triggerSave }) {
                   </select>
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: 11, color: 'rgba(255,255,255,0.4)', marginBottom: 5 }}>{isFr ? 'Durée (min)' : 'Duration (min)'}</label>
+                  <label style={{ display: 'block', fontSize: 11, color: 'var(--muted)', marginBottom: 5 }}>{isFr ? 'Durée (min)' : 'Duration (min)'}</label>
                   <input className="input" type="number" value={editEvent.duration} onChange={e => setEditEvent(p => ({ ...p, duration: parseInt(e.target.value) }))} />
                 </div>
               </div>

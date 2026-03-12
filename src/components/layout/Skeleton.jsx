@@ -14,7 +14,7 @@ export function SkeletonLine({ width = '100%', height = 14, borderRadius = 6, st
 export function SkeletonCard({ style = {} }) {
   return (
     <div style={{
-      background: '#12141f', border: '1px solid rgba(255,255,255,0.05)',
+      background: 'var(--surface)', border: '1px solid var(--border)',
       borderRadius: 16, padding: 18, display: 'flex', flexDirection: 'column', gap: 12,
       ...style,
     }}>
@@ -32,7 +32,7 @@ export function SkeletonList({ rows = 4 }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
       {Array.from({ length: rows }).map((_, i) => (
         <div key={i} style={{
-          background: '#12141f', border: '1px solid rgba(255,255,255,0.05)',
+          background: 'var(--surface)', border: '1px solid var(--border)',
           borderRadius: 12, padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 14,
           opacity: 1 - i * 0.15,
         }}>
@@ -68,7 +68,7 @@ export function SkeletonDashboard() {
         {[0,1,2,3,4].map(i => <SkeletonLine key={i} width={90} height={34} borderRadius={10} />)}
       </div>
       {/* Chat */}
-      <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, padding: 20, height: 300 }}>
+      <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 20, height: 300 }}>
         <SkeletonLine width={160} height={14} borderRadius={6} style={{ marginBottom: 20 }} />
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}><SkeletonLine width="55%" height={38} borderRadius={12} /></div>

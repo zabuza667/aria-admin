@@ -132,7 +132,11 @@ export default function App() {
 
   // Dark/light mode CSS
   useEffect(() => {
-    document.body.style.background = darkMode ? '#0a0b12' : '#f0f2f8'
+    if (darkMode) {
+      document.body.classList.remove('light')
+    } else {
+      document.body.classList.add('light')
+    }
     document.body.style.colorScheme = darkMode ? 'dark' : 'light'
   }, [darkMode])
 

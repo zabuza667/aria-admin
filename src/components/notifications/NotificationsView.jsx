@@ -59,7 +59,7 @@ export default function NotificationsView({ lang, notifications, setNotification
             const tc = TYPE_CONFIG[notif.type] || TYPE_CONFIG.info
             return (
               <div key={notif.id} style={{
-                background: notif.read ? '#12141f' : tc.bg,
+                background: notif.read ? 'var(--surface)' : tc.bg,
                 border: '1px solid ' + (notif.read ? 'rgba(255,255,255,0.05)' : tc.color + '33'),
                 borderRadius: 12, padding: '14px 16px',
                 display: 'flex', alignItems: 'flex-start', gap: 12,
@@ -70,8 +70,8 @@ export default function NotificationsView({ lang, notifications, setNotification
                     <span style={{ fontWeight: notif.read ? 500 : 700, color: notif.read ? 'rgba(255,255,255,0.7)' : 'white', fontSize: 13 }}>{notif.title}</span>
                     {!notif.read && <span style={{ width: 7, height: 7, borderRadius: '50%', background: tc.color }} />}
                   </div>
-                  <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)' }}>{notif.message}</div>
-                  <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', marginTop: 4 }}>
+                  <div style={{ fontSize: 12, color: 'var(--muted)' }}>{notif.message}</div>
+                  <div style={{ fontSize: 10, color: 'var(--muted2)', marginTop: 4 }}>
                     {new Date(notif.timestamp).toLocaleString(isFr ? 'fr-FR' : 'en-US', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
                   </div>
                 </div>
@@ -82,10 +82,10 @@ export default function NotificationsView({ lang, notifications, setNotification
       )}
 
       {activeTab === 'rules' && (
-        <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, overflow: 'hidden' }}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden' }}>
           {rules.map(rule => (
             <div key={rule.id} style={{ padding: '14px 20px', borderBottom: '1px solid rgba(255,255,255,0.04)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontWeight: 500, color: 'white', fontSize: 13 }}>{rule.label[lang] || rule.label.fr}</span>
+              <span style={{ fontWeight: 500, color: 'var(--text)', fontSize: 13 }}>{rule.label[lang] || rule.label.fr}</span>
               <button onClick={() => toggleRule(rule.id)} style={{
                 width: 44, height: 24, borderRadius: 12, border: 'none', cursor: 'pointer',
                 background: rule.active ? '#6470f1' : 'rgba(255,255,255,0.1)',

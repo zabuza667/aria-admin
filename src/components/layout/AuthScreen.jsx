@@ -51,7 +51,7 @@ export default function AuthScreen({ onAuth, lang }) {
   return (
     <div style={{
       minHeight: '100vh',
-      background: '#0a0b12',
+      background: 'var(--bg)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -74,7 +74,7 @@ export default function AuthScreen({ onAuth, lang }) {
       }} />
 
       <div style={{
-        background: '#12141f',
+        background: 'var(--surface)',
         border: '1px solid rgba(255,255,255,0.08)',
         borderRadius: 24,
         padding: 40,
@@ -93,8 +93,8 @@ export default function AuthScreen({ onAuth, lang }) {
             margin: '0 auto 12px',
             boxShadow: '0 0 24px rgba(100,112,241,0.4)',
           }}>A</div>
-          <h1 style={{ margin: 0, fontFamily: 'Outfit', fontWeight: 800, fontSize: 28, color: 'white' }}>Aria</h1>
-          <p style={{ margin: '4px 0 0', color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>
+          <h1 style={{ margin: 0, fontFamily: 'Outfit', fontWeight: 800, fontSize: 28, color: 'var(--text)' }}>Aria</h1>
+          <p style={{ margin: '4px 0 0', color: 'var(--muted)', fontSize: 13 }}>
             {isFr ? 'Assistant Administratif IA' : 'AI Administrative Assistant'}
           </p>
         </div>
@@ -123,18 +123,18 @@ export default function AuthScreen({ onAuth, lang }) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {mode === 'register' && (
             <div>
-              <label style={{ display: 'block', fontSize: 12, color: 'rgba(255,255,255,0.4)', marginBottom: 6, fontWeight: 500 }}>
+              <label style={{ display: 'block', fontSize: 12, color: 'var(--muted)', marginBottom: 6, fontWeight: 500 }}>
                 {isFr ? 'Nom complet' : 'Full name'}
               </label>
               <input className="input" value={name} onChange={e => setName(e.target.value)} placeholder={isFr ? 'Votre nom' : 'Your name'} />
             </div>
           )}
           <div>
-            <label style={{ display: 'block', fontSize: 12, color: 'rgba(255,255,255,0.4)', marginBottom: 6, fontWeight: 500 }}>Email</label>
+            <label style={{ display: 'block', fontSize: 12, color: 'var(--muted)', marginBottom: 6, fontWeight: 500 }}>Email</label>
             <input className="input" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="email@exemple.com" onKeyDown={e => e.key === 'Enter' && handleSubmit()} />
           </div>
           <div>
-            <label style={{ display: 'block', fontSize: 12, color: 'rgba(255,255,255,0.4)', marginBottom: 6, fontWeight: 500 }}>
+            <label style={{ display: 'block', fontSize: 12, color: 'var(--muted)', marginBottom: 6, fontWeight: 500 }}>
               {isFr ? 'Mot de passe' : 'Password'}
             </label>
             <input className="input" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" onKeyDown={e => e.key === 'Enter' && handleSubmit()} />

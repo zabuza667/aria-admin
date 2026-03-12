@@ -20,24 +20,24 @@ export default function SettingsView({ lang, setLang, user, setUser }) {
     <div style={{ padding: 24, maxWidth: 640 }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
         {/* Profile */}
-        <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, padding: 24 }}>
-          <h3 style={{ margin: '0 0 20px', fontFamily: 'Outfit', fontWeight: 600, color: 'white' }}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 24 }}>
+          <h3 style={{ margin: '0 0 20px', fontFamily: 'Outfit', fontWeight: 600, color: 'var(--text)' }}>
             👤 {isFr ? 'Profil' : 'Profile'}
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div>
-              <label style={{ display: 'block', fontSize: 12, color: 'rgba(255,255,255,0.4)', marginBottom: 6 }}>{isFr ? 'Nom affiché' : 'Display name'}</label>
+              <label style={{ display: 'block', fontSize: 12, color: 'var(--muted)', marginBottom: 6 }}>{isFr ? 'Nom affiché' : 'Display name'}</label>
               <input className="input" value={name} onChange={e => setName(e.target.value)} placeholder={isFr ? 'Votre nom' : 'Your name'} />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: 12, color: 'rgba(255,255,255,0.4)', marginBottom: 6 }}>Email</label>
+              <label style={{ display: 'block', fontSize: 12, color: 'var(--muted)', marginBottom: 6 }}>Email</label>
               <input className="input" value={user?.email || ''} disabled style={{ opacity: 0.5, cursor: 'not-allowed' }} />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: 12, color: 'rgba(255,255,255,0.4)', marginBottom: 6 }}>{isFr ? 'Rôle' : 'Role'}</label>
+              <label style={{ display: 'block', fontSize: 12, color: 'var(--muted)', marginBottom: 6 }}>{isFr ? 'Rôle' : 'Role'}</label>
               <div style={{
                 padding: '8px 14px', background: 'rgba(255,255,255,0.03)', borderRadius: 10,
-                border: '1px solid rgba(255,255,255,0.08)',
+                border: '1px solid var(--border2)',
                 fontSize: 13, color: ROLES[user?.role]?.color || '#a5b8fc', fontWeight: 600,
               }}>
                 {ROLES[user?.role]?.label?.[lang] || user?.role || 'Admin'}
@@ -50,8 +50,8 @@ export default function SettingsView({ lang, setLang, user, setUser }) {
         </div>
 
         {/* Language */}
-        <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, padding: 24 }}>
-          <h3 style={{ margin: '0 0 16px', fontFamily: 'Outfit', fontWeight: 600, color: 'white' }}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 24 }}>
+          <h3 style={{ margin: '0 0 16px', fontFamily: 'Outfit', fontWeight: 600, color: 'var(--text)' }}>
             🌐 {isFr ? 'Langue' : 'Language'}
           </h3>
           <div style={{ display: 'flex', gap: 10 }}>
@@ -67,9 +67,9 @@ export default function SettingsView({ lang, setLang, user, setUser }) {
         </div>
 
         {/* About */}
-        <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.05)', borderRadius: 16, padding: 24 }}>
-          <h3 style={{ margin: '0 0 12px', fontFamily: 'Outfit', fontWeight: 600, color: 'white' }}>ℹ️ Aria</h3>
-          <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', lineHeight: 1.8 }}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: 24 }}>
+          <h3 style={{ margin: '0 0 12px', fontFamily: 'Outfit', fontWeight: 600, color: 'var(--text)' }}>ℹ️ Aria</h3>
+          <div style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.8 }}>
             <p style={{ margin: '0 0 6px' }}>Version 1.0.0</p>
             <p style={{ margin: '0 0 6px' }}>Powered by Claude AI (Anthropic)</p>
             <p style={{ margin: 0 }}>Supabase · Resend · Google APIs</p>

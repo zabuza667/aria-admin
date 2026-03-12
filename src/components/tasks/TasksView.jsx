@@ -77,7 +77,7 @@ export default function TasksView({ lang, user, addLog, triggerSave }) {
     <div style={{ padding: 24, height: 'calc(100vh - 60px)', display: 'flex', flexDirection: 'column', gap: 16, overflow: 'hidden' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
         <div>
-          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)' }}>
+          <div style={{ fontSize: 12, color: 'var(--muted2)' }}>
             {tasks.length} {isFr ? 'tâches au total' : 'total tasks'}
           </div>
         </div>
@@ -123,7 +123,7 @@ export default function TasksView({ lang, user, addLog, triggerSave }) {
                   onDragStart={() => setDragging(task.id)}
                   onDragEnd={() => { setDragging(null); setDragOver(null) }}
                   style={{
-                    background: '#12141f',
+                    background: 'var(--surface)',
                     border: '1px solid rgba(255,255,255,0.06)',
                     borderRadius: 10, padding: 12,
                     cursor: 'grab',
@@ -134,13 +134,13 @@ export default function TasksView({ lang, user, addLog, triggerSave }) {
                   onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)'}
                 >
                   <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 6, marginBottom: 6 }}>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: 'white', lineHeight: 1.4 }}>{task.title}</span>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)', lineHeight: 1.4 }}>{task.title}</span>
                     <div style={{ display: 'flex', gap: 3, flexShrink: 0 }}>
-                      <button onClick={() => openEdit(task)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 12, color: 'rgba(255,255,255,0.3)', padding: 2 }}>✏️</button>
-                      <button onClick={() => deleteTask(task.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 12, color: 'rgba(255,255,255,0.3)', padding: 2 }}>🗑️</button>
+                      <button onClick={() => openEdit(task)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 12, color: 'var(--muted2)', padding: 2 }}>✏️</button>
+                      <button onClick={() => deleteTask(task.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 12, color: 'var(--muted2)', padding: 2 }}>🗑️</button>
                     </div>
                   </div>
-                  {task.desc && <p style={{ margin: '0 0 8px', fontSize: 11, color: 'rgba(255,255,255,0.4)', lineHeight: 1.5 }}>{task.desc}</p>}
+                  {task.desc && <p style={{ margin: '0 0 8px', fontSize: 11, color: 'var(--muted)', lineHeight: 1.5 }}>{task.desc}</p>}
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, alignItems: 'center' }}>
                     <span style={{ fontSize: 9, fontWeight: 700, padding: '1px 6px', borderRadius: 99, background: priorityColor(task.priority) + '22', color: priorityColor(task.priority), border: '1px solid ' + priorityColor(task.priority) + '44' }}>
                       {isFr ? task.priority : (task.priority === 'haute' ? 'high' : task.priority === 'moyenne' ? 'medium' : 'low')}
@@ -167,8 +167,8 @@ export default function TasksView({ lang, user, addLog, triggerSave }) {
       {/* Modal */}
       {showModal && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 24 }}>
-          <div style={{ background: '#12141f', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 20, padding: 28, width: '100%', maxWidth: 480 }}>
-            <h3 style={{ margin: '0 0 20px', fontFamily: 'Outfit', fontWeight: 600, color: 'white' }}>
+          <div style={{ background: 'var(--surface)', border: '1px solid var(--border2)', borderRadius: 20, padding: 28, width: '100%', maxWidth: 480 }}>
+            <h3 style={{ margin: '0 0 20px', fontFamily: 'Outfit', fontWeight: 600, color: 'var(--text)' }}>
               {editTask?.id ? (isFr ? '✏️ Modifier la tâche' : '✏️ Edit task') : (isFr ? '➕ Nouvelle tâche' : '➕ New task')}
             </h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -176,7 +176,7 @@ export default function TasksView({ lang, user, addLog, triggerSave }) {
               <textarea className="input" rows={3} placeholder={isFr ? 'Description...' : 'Description...'} value={editTask?.desc || ''} onChange={e => setEditTask(p => ({ ...p, desc: e.target.value }))} style={{ resize: 'vertical' }} />
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: 11, color: 'rgba(255,255,255,0.4)', marginBottom: 5 }}>{isFr ? 'Priorité' : 'Priority'}</label>
+                  <label style={{ display: 'block', fontSize: 11, color: 'var(--muted)', marginBottom: 5 }}>{isFr ? 'Priorité' : 'Priority'}</label>
                   <select className="input" value={editTask?.priority || 'moyenne'} onChange={e => setEditTask(p => ({ ...p, priority: e.target.value }))}>
                     <option value="haute">{isFr ? 'Haute' : 'High'}</option>
                     <option value="moyenne">{isFr ? 'Moyenne' : 'Medium'}</option>
@@ -184,7 +184,7 @@ export default function TasksView({ lang, user, addLog, triggerSave }) {
                   </select>
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: 11, color: 'rgba(255,255,255,0.4)', marginBottom: 5 }}>{isFr ? 'Statut' : 'Status'}</label>
+                  <label style={{ display: 'block', fontSize: 11, color: 'var(--muted)', marginBottom: 5 }}>{isFr ? 'Statut' : 'Status'}</label>
                   <select className="input" value={editTask?.status || 'todo'} onChange={e => setEditTask(p => ({ ...p, status: e.target.value }))}>
                     <option value="todo">{isFr ? 'À faire' : 'To Do'}</option>
                     <option value="inprogress">{isFr ? 'En cours' : 'In Progress'}</option>
@@ -195,11 +195,11 @@ export default function TasksView({ lang, user, addLog, triggerSave }) {
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: 11, color: 'rgba(255,255,255,0.4)', marginBottom: 5 }}>{isFr ? 'Échéance' : 'Due date'}</label>
+                  <label style={{ display: 'block', fontSize: 11, color: 'var(--muted)', marginBottom: 5 }}>{isFr ? 'Échéance' : 'Due date'}</label>
                   <input className="input" type="date" value={editTask?.due || ''} onChange={e => setEditTask(p => ({ ...p, due: e.target.value }))} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: 11, color: 'rgba(255,255,255,0.4)', marginBottom: 5 }}>{isFr ? 'Assigné à' : 'Assignee'}</label>
+                  <label style={{ display: 'block', fontSize: 11, color: 'var(--muted)', marginBottom: 5 }}>{isFr ? 'Assigné à' : 'Assignee'}</label>
                   <input className="input" placeholder={isFr ? 'Nom...' : 'Name...'} value={editTask?.assignee || ''} onChange={e => setEditTask(p => ({ ...p, assignee: e.target.value }))} />
                 </div>
               </div>
