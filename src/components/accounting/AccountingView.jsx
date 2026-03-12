@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { useLS } from '../../hooks/useStore'
 import { callClaude } from '../../lib/claude'
+import { exportInvoicesPDF, exportSingleInvoicePDF } from '../../lib/exportPDF'
 
 const SAMPLE_INVOICES = [
   { id: 1, number: 'FAC-2026-001', client: 'Dupont & Associés', amount: 4500, status: 'paid', date: '2026-03-01', due: '2026-03-31', category: 'Service' },
@@ -33,7 +34,20 @@ export default function AccountingView({ lang, addLog, triggerSave }) {
   const [ocrResult, setOcrResult] = useState(null)
   const [showOcr, setShowOcr] = useState(false)
   const fileRef = useRef()
+  const [pdfLoading, setPdfLoading] = useState(false)
   const isFr = lang === 'fr'
+
+  async function handleExportAll() {
+    setPdfLoading(true)
+    try { await exportInvoicesPDF(invoices, expenses, isFr) }
+    finally { setPdfLoading(false) }
+  }
+
+  async function handleExportInvoice(invoice) {
+    setPdfLoading(true)
+    try { await exportSingleInvoicePDF(invoice, {}, isFr) }
+    finally { setPdfLoading(false) }
+  }
 
   const totalRevenue = invoices.filter(i => i.status === 'paid').reduce((s, i) => s + i.amount, 0)
   const totalPending = invoices.filter(i => i.status === 'pending').reduce((s, i) => s + i.amount, 0)
@@ -221,6 +235,15 @@ export default function AccountingView({ lang, addLog, triggerSave }) {
           }}>{l}</button>
         ))}
         <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
+          {/* BOUTON EXPORT PDF GLOBAL */}
+          <button onClick={handleExportAll} disabled={pdfLoading} style={{
+            padding: '6px 14px', borderRadius: 8, border: '1px solid rgba(239,68,68,0.3)',
+            cursor: 'pointer', fontSize: 12, fontWeight: 600,
+            background: 'rgba(239,68,68,0.08)', color: '#f87171',
+            display: 'flex', alignItems: 'center', gap: 6, transition: 'all 0.2s',
+          }}>
+            {pdfLoading ? '⏳' : '🖨️'} {isFr ? 'Exporter PDF' : 'Export PDF'}
+          </button>
           {(activeTab === 'invoices' || activeTab === 'expenses') && (
             <>
               {/* OCR BUTTON */}
@@ -261,6 +284,10 @@ export default function AccountingView({ lang, addLog, triggerSave }) {
                   {isFr ? sc.labelFr : sc.labelEn}
                 </span>
                 <div style={{ display: 'flex', gap: 4 }}>
+                  <button onClick={() => handleExportInvoice(inv)} title={isFr ? 'Exporter en PDF' : 'Export as PDF'} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.4)', fontSize: 14 }}
+                    onMouseEnter={e => e.currentTarget.style.color = '#f87171'}
+                    onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.4)'}
+                  >🖨️</button>
                   <button onClick={() => { setEditItem(inv); setShowModal(true) }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.4)', fontSize: 14 }}>✏️</button>
                   <button onClick={() => deleteItem(inv.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.3)', fontSize: 14 }}
                     onMouseEnter={e => e.currentTarget.style.color = '#ef4444'}
