@@ -330,7 +330,7 @@ export async function exportSingleInvoicePDF(invoice, companyInfo = {}, isFr) {
   const items = invoice.items || [{ desc: invoice.category || 'Prestation', qty: 1, price: invoice.amount }]
   const iHeaders = isFr ? ['Description', 'Qté', 'Prix unitaire', 'Total'] : ['Description', 'Qty', 'Unit price', 'Total']
   const iColW = [90, 20, 35, 34]
-  cx = 10
+  let cx = 10
 
   doc.setFillColor(...COLORS.primary)
   doc.rect(10, y, W - 20, 8, 'F')
