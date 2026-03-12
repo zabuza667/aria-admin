@@ -10,8 +10,8 @@ const SAMPLE_CONTACTS = [
   { id: 5, name: 'Isabelle Chen', company: 'Martin Industries', email: 'ichen@martin-ind.fr', phone: '01 44 55 66 77', type: 'partner', status: 'active', notes: 'Partenaire stratégique', lastContact: '2026-03-01' },
 ]
 
-export default function CRMView({ lang, addLog }) {
-  const [contacts, setContacts] = useLS('crm_contacts', SAMPLE_CONTACTS)
+export default function CRMView({ lang, addLog, triggerSave }) {
+  const [contacts, setContacts] = useLS('crm_contacts', SAMPLE_CONTACTS, triggerSave)
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState('all')
   const [showModal, setShowModal] = useState(false)

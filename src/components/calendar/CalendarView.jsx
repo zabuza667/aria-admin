@@ -18,8 +18,8 @@ const TYPE_CONFIG = {
   reminder: { color: '#6b7280', icon: '⏰', label: { fr: 'Rappel', en: 'Reminder' } },
 }
 
-export default function CalendarView({ lang, addLog }) {
-  const [events, setEvents] = useLS('events', SAMPLE_EVENTS)
+export default function CalendarView({ lang, addLog, triggerSave }) {
+  const [events, setEvents] = useLS('events', SAMPLE_EVENTS, triggerSave)
   const [currentDate, setCurrentDate] = useState(new Date(2026, 2, 1)) // March 2026
   const [view, setView] = useState('month')
   const [showModal, setShowModal] = useState(false)

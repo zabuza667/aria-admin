@@ -10,8 +10,8 @@ const SAMPLE_EMAILS = [
   { id: 5, from: 'newsletter@tech.com', fromName: 'Tech Weekly', subject: 'Les dernières tendances IA en entreprise', body: "Cette semaine dans Tech Weekly: l'IA générative transforme les PME, les nouveaux modèles Claude 4, Microsoft Copilot dans Office 365...", date: '2026-03-08T07:00:00', read: true, priority: 'faible', labels: ['newsletter'] },
 ]
 
-export default function EmailView({ lang, user, addLog }) {
-  const [emails, setEmails] = useLS('emails', SAMPLE_EMAILS)
+export default function EmailView({ lang, user, addLog, triggerSave }) {
+  const [emails, setEmails] = useLS('emails', SAMPLE_EMAILS, triggerSave)
   const [selected, setSelected] = useState(null)
   const [analysis, setAnalysis] = useState(null)
   const [analyzing, setAnalyzing] = useState(false)

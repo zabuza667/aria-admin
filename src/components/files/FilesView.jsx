@@ -23,8 +23,8 @@ function formatSize(bytes) {
   return (bytes / (1024 * 1024)).toFixed(1) + ' MB'
 }
 
-export default function FilesView({ lang, addLog }) {
-  const [files, setFiles] = useLS('files', SAMPLE_FILES)
+export default function FilesView({ lang, addLog, triggerSave }) {
+  const [files, setFiles] = useLS('files', SAMPLE_FILES, triggerSave)
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('all')
   const [dragOver, setDragOver] = useState(false)

@@ -21,9 +21,9 @@ const STATUS_CONFIG = {
   overdue: { labelFr: 'En retard', labelEn: 'Overdue', color: '#ef4444', bg: 'rgba(239,68,68,0.1)' },
 }
 
-export default function AccountingView({ lang, addLog }) {
-  const [invoices, setInvoices] = useLS('invoices', SAMPLE_INVOICES)
-  const [expenses, setExpenses] = useLS('expenses', SAMPLE_EXPENSES)
+export default function AccountingView({ lang, addLog, triggerSave }) {
+  const [invoices, setInvoices] = useLS('invoices', SAMPLE_INVOICES, triggerSave)
+  const [expenses, setExpenses] = useLS('expenses', SAMPLE_EXPENSES, triggerSave)
   const [activeTab, setActiveTab] = useState('invoices')
   const [showModal, setShowModal] = useState(false)
   const [editItem, setEditItem] = useState(null)

@@ -17,8 +17,8 @@ const SAMPLE_TASKS = [
   { id: 5, title: 'Facture fournisseur #4521', desc: 'Vérification et validation paiement 847€', status: 'done', priority: 'haute', due: '2026-03-10', assignee: 'Julie' },
 ]
 
-export default function TasksView({ lang, user, addLog }) {
-  const [tasks, setTasks] = useLS('tasks', SAMPLE_TASKS)
+export default function TasksView({ lang, user, addLog, triggerSave }) {
+  const [tasks, setTasks] = useLS('tasks', SAMPLE_TASKS, triggerSave)
   const [showModal, setShowModal] = useState(false)
   const [editTask, setEditTask] = useState(null)
   const [aiSuggesting, setAiSuggesting] = useState(false)

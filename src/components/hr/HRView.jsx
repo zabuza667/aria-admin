@@ -14,9 +14,9 @@ const SAMPLE_LEAVES = [
   { id: 3, employee: 'Julie Rousseau', type: 'Maladie', from: '2026-03-04', to: '2026-03-05', days: 2, status: 'approved', reason: 'Arrêt maladie' },
 ]
 
-export default function HRView({ lang, addLog }) {
-  const [employees, setEmployees] = useLS('hr_employees', SAMPLE_EMPLOYEES)
-  const [leaves, setLeaves] = useLS('hr_leaves', SAMPLE_LEAVES)
+export default function HRView({ lang, addLog, triggerSave }) {
+  const [employees, setEmployees] = useLS('hr_employees', SAMPLE_EMPLOYEES, triggerSave)
+  const [leaves, setLeaves] = useLS('hr_leaves', SAMPLE_LEAVES, triggerSave)
   const [activeTab, setActiveTab] = useState('employees')
   const [showModal, setShowModal] = useState(false)
   const [editItem, setEditItem] = useState(null)

@@ -26,8 +26,9 @@ import CEOView from './components/ceo/CEOView'
 const INACTIVITY_LIMIT = 30 * 60 * 1000 // 30 minutes
 
 export default function App() {
-  const { lang, setLang, user, setUser, notifications, setNotifications, logs, setLogs, addLog, addNotification } = useAppStore()
+  const { lang, setLang, user, setUser, notifications, setNotifications, logs, setLogs, addLog, addNotification, saveIndicator, triggerSave } = useAppStore()
   const [section, setSection] = useState('dashboard')
+  const [prevSection, setPrevSection] = useState('dashboard')
   const [authLoading, setAuthLoading] = useState(true)
   const [darkMode, setDarkMode] = useState(true)
   const [showSearch, setShowSearch] = useState(false)
@@ -37,6 +38,7 @@ export default function App() {
     return localStorage.getItem('briefing_seen_' + today) === '1'
   })
   const [refreshKey, setRefreshKey] = useState(0)
+  const [animKey, setAnimKey] = useState(0)
   const inactivityTimer = useRef(null)
 
   function handleRefresh() {
@@ -45,12 +47,31 @@ export default function App() {
   const searchRef = useRef(null)
   const isFr = lang === 'fr'
 
-  const stats = {
-    unreadEmails: 2,
-    activeTasks: 4,
-    todayMeetings: 2,
-    pendingInvoices: 2,
-  }
+  // Stats dynamiques temps réel
+  const computeStats = useCallback(() => {
+    try {
+      const tasks = JSON.parse(localStorage.getItem('aria_tasks') || '[]')
+      const invoices = JSON.parse(localStorage.getItem('aria_invoices') || '[]')
+      const emails = JSON.parse(localStorage.getItem('aria_emails') || '[]')
+      const events = JSON.parse(localStorage.getItem('aria_events') || '[]')
+      const today = new Date().toDateString()
+      return {
+        unreadEmails: emails.filter(e => !e.read).length || 2,
+        activeTasks: tasks.filter(t => t.status === 'inProgress' || t.status === 'todo').length || 4,
+        todayMeetings: events.filter(e => new Date(e.date || e.start).toDateString() === today).length || 2,
+        pendingInvoices: invoices.filter(i => i.status === 'pending' || i.status === 'overdue').length || 2,
+      }
+    } catch {
+      return { unreadEmails: 2, activeTasks: 4, todayMeetings: 2, pendingInvoices: 2 }
+    }
+  }, [])
+
+  const [stats, setStats] = useState(computeStats)
+
+  // Mise à jour stats quand localStorage change (triggerSave)
+  useEffect(() => {
+    setStats(computeStats())
+  }, [saveIndicator, section])
 
   // Auth
   useEffect(() => {
@@ -128,6 +149,7 @@ export default function App() {
       return
     }
     setSection(newSection)
+    setAnimKey(k => k + 1)
     setShowSearch(false)
     addLog('🧭 Navigation → ' + newSection, 'info', 'app')
   }
@@ -154,7 +176,7 @@ export default function App() {
   if (!user) return <AuthScreen onAuth={setUser} lang={lang} />
 
   const unreadNotifs = notifications.filter(n => !n.read).length
-  const sharedProps = { lang, user, addLog, addNotification }
+  const sharedProps = { lang, user, addLog, addNotification, triggerSave }
 
   const dashboardProps = { ...sharedProps, stats, onNavigate: navigate, darkMode, setDarkMode, briefingShownToday, onBriefingShown: () => { const today = new Date().toDateString(); localStorage.setItem('briefing_seen_' + today, '1'); setBriefingShownToday(true) } }
 
@@ -249,12 +271,44 @@ export default function App() {
           onRefresh={handleRefresh}
           onNavigate={navigate}
         />
-        <main style={{ flex: 1, overflowY: 'auto' }}>
-          {/* Dashboard toujours monté - jamais détruit */}
+        <main style={{ flex: 1, overflowY: 'auto', position: 'relative' }}>
+
+          {/* Toast sauvegarde */}
+          <div style={{
+            position: 'fixed', bottom: 24, right: 24, zIndex: 999,
+            background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.4)',
+            borderRadius: 12, padding: '10px 18px', display: 'flex', alignItems: 'center', gap: 8,
+            backdropFilter: 'blur(12px)', boxShadow: '0 4px 20px rgba(16,185,129,0.2)',
+            transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            transform: saveIndicator ? 'translateY(0) scale(1)' : 'translateY(80px) scale(0.9)',
+            opacity: saveIndicator ? 1 : 0,
+            pointerEvents: 'none',
+          }}>
+            <span style={{ fontSize: 16 }}>💾</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: '#10b981' }}>
+              {isFr ? 'Sauvegardé' : 'Saved'}
+            </span>
+            <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#10b981', boxShadow: '0 0 6px #10b981' }} />
+          </div>
+
+          {/* Dashboard toujours monté */}
           <div style={{ display: section === 'dashboard' ? 'block' : 'none' }}>
             <Dashboard {...dashboardProps} />
           </div>
-          {section !== 'dashboard' && <div key={refreshKey}>{renderSection()}</div>}
+
+          {/* Autres sections avec animation */}
+          {section !== 'dashboard' && (
+            <div key={animKey} style={{ animation: 'fadeSlideIn 0.25s cubic-bezier(0.22, 1, 0.36, 1)' }}>
+              {renderSection()}
+            </div>
+          )}
+
+          <style>{`
+            @keyframes fadeSlideIn {
+              from { opacity: 0; transform: translateY(12px); }
+              to   { opacity: 1; transform: translateY(0); }
+            }
+          `}</style>
         </main>
       </div>
     </div>
