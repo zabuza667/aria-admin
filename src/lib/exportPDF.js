@@ -390,7 +390,9 @@ export async function exportSingleInvoicePDF(invoice, companyInfo = {}, isFr) {
 
   // Statut badge
   y += 46
-  doc.setFillColor(...statusColor(invoice.status), 30)
+  const sColor = statusColor(invoice.status)
+  doc.setFillColor(sColor[0], sColor[1], sColor[2])
+  doc.setDrawColor(sColor[0], sColor[1], sColor[2])
   doc.roundedRect(10, y, 50, 10, 3, 3, 'F')
   doc.setFontSize(8)
   doc.setFont('helvetica', 'bold')
