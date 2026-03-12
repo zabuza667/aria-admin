@@ -45,8 +45,14 @@ export default function AccountingView({ lang, addLog, triggerSave }) {
 
   async function handleExportInvoice(invoice) {
     setPdfLoading(true)
-    try { await exportSingleInvoicePDF(invoice, {}, isFr) }
-    finally { setPdfLoading(false) }
+    try {
+      await exportSingleInvoicePDF(invoice, {}, isFr)
+    } catch(err) {
+      alert('Erreur PDF: ' + err.message)
+      console.error(err)
+    } finally {
+      setPdfLoading(false)
+    }
   }
 
   const totalRevenue = invoices.filter(i => i.status === 'paid').reduce((s, i) => s + i.amount, 0)
