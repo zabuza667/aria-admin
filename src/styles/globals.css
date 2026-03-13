@@ -21,20 +21,21 @@
 }
 
 body.light {
-  --bg:          #d8d8d4;
-  --bg2:         #cececa;
-  --surface:     #f5f2ec;
-  --surface2:    #ede9e1;
+  /* ── Aria Slate ── */
+  --bg:          #c8d0dc;
+  --bg2:         #bec8d6;
+  --surface:     #d6dfe8;
+  --surface2:    #ccd4e0;
   --border:      rgba(0,0,0,0.1);
   --border2:     rgba(0,0,0,0.16);
-  --text:        #1a1a18;
-  --text2:       #2e2e2a;
-  --muted:       #5a5a56;
-  --muted2:      #8a8a86;
-  --input-bg:    #f5f2ec;
+  --text:        #141820;
+  --text2:       #242830;
+  --muted:       #4a5268;
+  --muted2:      #7a8298;
+  --input-bg:    #d6dfe8;
   --scrollbar:   rgba(0,0,0,0.14);
-  --primary:     #4f52e5;
-  --primary-dim: rgba(79,82,229,0.12);
+  --primary:     #6470f1;
+  --primary-dim: rgba(100,112,241,0.15);
 }
 
 @layer base {
