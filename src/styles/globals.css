@@ -21,20 +21,20 @@
 }
 
 body.light {
-  --bg:          #f0ebe3;
-  --bg2:         #e8e2d9;
-  --surface:     #faf7f2;
-  --surface2:    #f4f0e8;
-  --border:      rgba(0,0,0,0.09);
-  --border2:     rgba(0,0,0,0.14);
-  --text:        #1a1714;
-  --text2:       #2e2a26;
-  --muted:       #6b6560;
-  --muted2:      #9a9490;
-  --input-bg:    #faf7f2;
-  --scrollbar:   rgba(0,0,0,0.12);
+  --bg:          #d8d8d4;
+  --bg2:         #cececa;
+  --surface:     #f5f2ec;
+  --surface2:    #ede9e1;
+  --border:      rgba(0,0,0,0.1);
+  --border2:     rgba(0,0,0,0.16);
+  --text:        #1a1a18;
+  --text2:       #2e2e2a;
+  --muted:       #5a5a56;
+  --muted2:      #8a8a86;
+  --input-bg:    #f5f2ec;
+  --scrollbar:   rgba(0,0,0,0.14);
   --primary:     #4f52e5;
-  --primary-dim: rgba(79,82,229,0.1);
+  --primary-dim: rgba(79,82,229,0.12);
 }
 
 @layer base {
