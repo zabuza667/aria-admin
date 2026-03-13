@@ -9,26 +9,164 @@ import {
 
 const COLORS = ['#6470f1','#10b981','#f59e0b','#ec4899','#06b6d4','#84cc16','#f97316','#8b5cf6']
 
+// ── Détecte si le message demande un tableau/rapport visuel ──
+function isVisualRequest(text) {
+  const keywords = ['tableau', 'table', 'rapport', 'report', 'résumé visuel', 'visual summary',
+    'génère un tableau', 'create a table', 'affiche', 'display', 'montre', 'show me',
+    'récapitulatif', 'summary', 'synthèse', 'overview', 'dashboard']
+  return keywords.some(k => text.toLowerCase().includes(k))
+}
+
+// ── Composant Tableau Visuel ──
+function VisualTable({ data, title, headers, isFr }) {
+  const numericCols = headers.filter(h => data.some(r => typeof r[h] === 'number' || (!isNaN(Number(r[h])) && r[h] !== '' && r[h] !== undefined)))
+
+  function exportPDF() {
+    const printWindow = window.open('', '_blank')
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>${title}</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; padding: 40px; color: #1a1d2e; background: #fff; }
+    .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; padding-bottom: 16px; border-bottom: 3px solid #6470f1; }
+    .title { font-size: 24px; font-weight: 800; color: #1a1d2e; }
+    .subtitle { font-size: 12px; color: #6b7280; margin-top: 4px; }
+    .logo { font-size: 20px; font-weight: 800; color: #6470f1; }
+    .stats { display: grid; grid-template-columns: repeat(${Math.min(numericCols.length, 4)}, 1fr); gap: 12px; margin-bottom: 24px; }
+    .stat-card { background: #f8f9ff; border: 1px solid #e8eaff; border-radius: 8px; padding: 12px 16px; }
+    .stat-label { font-size: 11px; color: #6b7280; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .stat-value { font-size: 20px; font-weight: 800; color: #6470f1; margin-top: 4px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: #6470f1; color: white; padding: 10px 14px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+    td { padding: 9px 14px; border-bottom: 1px solid #f0f0f0; }
+    tr:nth-child(even) td { background: #fafbff; }
+    tr:hover td { background: #f0f2ff; }
+    .num { text-align: right; font-weight: 600; color: #6470f1; }
+    .footer { margin-top: 24px; text-align: center; font-size: 11px; color: #9ca3af; }
+    @media print { body { padding: 20px; } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <div class="title">${title}</div>
+      <div class="subtitle">Généré par Aria · ${new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
+    </div>
+    <div class="logo">✦ Aria</div>
+  </div>
+  ${numericCols.length > 0 ? `
+  <div class="stats">
+    ${numericCols.slice(0, 4).map(col => {
+      const vals = data.map(r => Number(r[col])).filter(v => !isNaN(v))
+      const total = vals.reduce((a, b) => a + b, 0)
+      return `<div class="stat-card"><div class="stat-label">${col} — Total</div><div class="stat-value">${total.toLocaleString('fr-FR')}</div></div>`
+    }).join('')}
+  </div>` : ''}
+  <table>
+    <thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>
+    <tbody>
+      ${data.map(row => `<tr>${headers.map(h => {
+        const v = row[h]
+        const isNum = typeof v === 'number' || (!isNaN(Number(v)) && v !== '' && v !== undefined)
+        return `<td class="${isNum ? 'num' : ''}">${isNum ? Number(v).toLocaleString('fr-FR') : (v ?? '')}</td>`
+      }).join('')}</tr>`).join('')}
+    </tbody>
+  </table>
+  <div class="footer">Rapport généré automatiquement par Aria · ${data.length} lignes · ${headers.length} colonnes</div>
+</body>
+</html>`
+    printWindow.document.write(html)
+    printWindow.document.close()
+    printWindow.onload = () => { printWindow.print() }
+  }
+
+  return (
+    <div style={{ marginTop: 8 }}>
+      {/* Stats cards */}
+      {numericCols.length > 0 && (
+        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${Math.min(numericCols.length, 4)}, 1fr)`, gap: 8, marginBottom: 12 }}>
+          {numericCols.slice(0, 4).map(col => {
+            const vals = data.map(r => Number(r[col])).filter(v => !isNaN(v))
+            const total = vals.reduce((a, b) => a + b, 0)
+            const avg = (total / vals.length).toFixed(0)
+            return (
+              <div key={col} style={{ background: 'rgba(100,112,241,0.08)', border: '1px solid rgba(100,112,241,0.2)', borderRadius: 10, padding: '10px 12px' }}>
+                <div style={{ fontSize: 10, color: 'var(--muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>{col}</div>
+                <div style={{ fontSize: 16, fontWeight: 800, color: '#a5b8fc' }}>{total.toLocaleString('fr-FR')}</div>
+                <div style={{ fontSize: 10, color: 'var(--muted2)', marginTop: 2 }}>∅ {Number(avg).toLocaleString('fr-FR')}</div>
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      {/* Tableau */}
+      <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
+        <div style={{ overflowX: 'auto', maxHeight: 300 }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+            <thead>
+              <tr>
+                {headers.map(h => (
+                  <th key={h} style={{ padding: '8px 12px', background: '#6470f1', color: 'white', textAlign: 'left', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((row, i) => (
+                <tr key={i} style={{ background: i % 2 === 0 ? 'var(--surface)' : 'var(--surface2)' }}>
+                  {headers.map(h => {
+                    const v = row[h]
+                    const isNum = typeof v === 'number' || (!isNaN(Number(v)) && v !== '' && v !== undefined)
+                    return (
+                      <td key={h} style={{ padding: '7px 12px', borderBottom: '1px solid var(--border)', textAlign: isNum ? 'right' : 'left', color: isNum ? '#a5b8fc' : 'var(--text)', fontWeight: isNum ? 600 : 400, whiteSpace: 'nowrap' }}>
+                        {isNum ? Number(v).toLocaleString('fr-FR') : String(v ?? '')}
+                      </td>
+                    )
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {/* Footer + export */}
+        <div style={{ padding: '8px 12px', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ fontSize: 11, color: 'var(--muted2)' }}>{data.length} lignes · {headers.length} colonnes</span>
+          <button onClick={exportPDF} style={{
+            padding: '5px 14px', borderRadius: 8, border: 'none', cursor: 'pointer', fontSize: 11, fontWeight: 600,
+            background: 'rgba(100,112,241,0.15)', color: '#a5b8fc', display: 'flex', alignItems: 'center', gap: 5,
+          }}>
+            🖨️ {isFr ? 'Exporter PDF' : 'Export PDF'}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const SUGGESTIONS_FR = [
+  'Génère un tableau récapitulatif complet',
+  'Fais moi un rapport avec tableau exportable',
   'Quel est le mois le plus rentable ?',
   'Détecte les anomalies dans mes données',
-  'Quelles sont les tendances principales ?',
-  'Calcule la moyenne et l\'écart type',
-  'Quels sont les 3 meilleurs résultats ?',
-  'Y a-t-il des valeurs manquantes ?',
+  'Affiche un résumé visuel de mes données',
   'Génère une formule RECHERCHEV pour ces données',
-  'Résume ces données en 5 points clés',
+  'Quelles sont les tendances principales ?',
+  'Y a-t-il des valeurs manquantes ?',
 ]
 
 const SUGGESTIONS_EN = [
+  'Generate a complete summary table',
+  'Make me a report with exportable table',
   'What is the most profitable month?',
   'Detect anomalies in my data',
-  'What are the main trends?',
-  'Calculate average and standard deviation',
-  'What are the top 3 results?',
-  'Are there any missing values?',
+  'Show me a visual overview of my data',
   'Generate a VLOOKUP formula for this data',
-  'Summarize this data in 5 key points',
+  'What are the main trends?',
+  'Are there any missing values?',
 ]
 
 function analyzeDataLocally(data, headers, isFr) {
@@ -208,6 +346,8 @@ export default function ExcelView({ lang, addLog, triggerSave }) {
     setMessages(prev => [...prev, userMsg])
     setTimeout(() => chatRef.current?.scrollTo(0, chatRef.current.scrollHeight), 50)
 
+    const wantsVisual = isVisualRequest(msg) && file && data.length > 0
+
     try {
       const context = file ? `
 Fichier Excel: "${file.name}"
@@ -221,16 +361,22 @@ Valeurs manquantes: ${analysis?.missing || 0}
 ` : (isFr ? 'Aucun fichier importé.' : 'No file imported.')
 
       const systemPrompt = isFr
-        ? `Tu es Aria, un assistant expert en Excel et analyse de données intégré dans une app de gestion. 
+        ? `Tu es Aria, un assistant expert en Excel et analyse de données intégré dans une app de gestion.
 Tu analyses des fichiers Excel et réponds aux questions en français de façon claire et structurée.
 Quand on te demande une formule Excel, tu donnes la formule EXACTE et complète, avec une explication.
 Tu utilises des emojis pour rendre les réponses lisibles.
 Tu es direct, précis, et utile. Tu ne donnes jamais de réponses vagues.
-Formules disponibles que tu maîtrises: SOMME, MOYENNE, MAX, MIN, NB, NBVAL, SI, SIERREUR, RECHERCHEV, RECHERCHEH, INDEX, EQUIV, NB.SI, SOMME.SI, SOMME.SI.ENS, RANG, GRANDE.VALEUR, PETITE.VALEUR, CONCATENER, MAJUSCULE, MINUSCULE, NOMPROPRE, NBCAR, GAUCHE, DROITE, STXT, SUPPRESPACE, SUBSTITUE, ARRONDI, ABS, RACINE, PUISSANCE, MOD, ENT, ECARTYPE, VAR, MEDIANE, ALEA, AUJOURDHUI, MAINTENANT, ANNEE, MOIS, JOUR, DATEDIF, TEXTE, ET, OU, NON, SI.CONDITIONS.`
-        : `You are Aria, an Excel and data analysis expert assistant integrated in a management app.
-You analyze Excel files and answer questions clearly and concisely.
-When asked for an Excel formula, give the EXACT complete formula with explanation.
-Use emojis to make responses readable. Be direct, precise and helpful.`
+${wantsVisual ? `IMPORTANT: L'utilisateur veut un tableau visuel. À la FIN de ta réponse texte, ajoute exactement ce bloc JSON (ne le modifie pas, remplace juste les valeurs):
+VISUAL_TABLE_START
+{"title":"[titre du tableau]","rows":[${JSON.stringify(data.slice(0,20))}],"headers":${JSON.stringify(headers)}}
+VISUAL_TABLE_END` : ''}
+Formules disponibles: SOMME, MOYENNE, MAX, MIN, NB, NBVAL, SI, SIERREUR, RECHERCHEV, INDEX, EQUIV, NB.SI, SOMME.SI, RANG, GRANDE.VALEUR, CONCATENER, MAJUSCULE, MINUSCULE, NBCAR, GAUCHE, DROITE, ARRONDI, ABS, RACINE, ECARTYPE, MEDIANE, AUJOURDHUI.`
+        : `You are Aria, an Excel and data analysis expert assistant.
+${wantsVisual ? `IMPORTANT: User wants a visual table. At the END of your text response, add exactly this JSON block:
+VISUAL_TABLE_START
+{"title":"[table title]","rows":[${JSON.stringify(data.slice(0,20))}],"headers":${JSON.stringify(headers)}}
+VISUAL_TABLE_END` : ''}
+Give EXACT Excel formulas when asked. Be direct and helpful.`
 
       const history = messages.slice(-6).map(m => ({ role: m.role, content: m.content }))
 
@@ -239,7 +385,7 @@ Use emojis to make responses readable. Be direct, precise and helpful.`
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
-          max_tokens: 1500,
+          max_tokens: 2000,
           system: systemPrompt,
           messages: [
             ...history,
@@ -248,9 +394,24 @@ Use emojis to make responses readable. Be direct, precise and helpful.`
         })
       })
       const result = await response.json()
-      const reply = result.content?.find(c => c.type === 'text')?.text || (isFr ? 'Erreur de réponse' : 'Response error')
+      let reply = result.content?.find(c => c.type === 'text')?.text || (isFr ? 'Erreur de réponse' : 'Response error')
 
-      setMessages(prev => [...prev, { role: 'assistant', content: reply, timestamp: Date.now() }])
+      // Extraire le tableau visuel si présent
+      let visualData = null
+      const visualMatch = reply.match(/VISUAL_TABLE_START\s*([\s\S]*?)\s*VISUAL_TABLE_END/)
+      if (visualMatch) {
+        try {
+          visualData = JSON.parse(visualMatch[1].trim())
+          reply = reply.replace(/VISUAL_TABLE_START[\s\S]*?VISUAL_TABLE_END/, '').trim()
+        } catch { visualData = null }
+      }
+
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: reply,
+        visualData,
+        timestamp: Date.now()
+      }])
       addLog?.('🤖 Analyse IA Excel', 'success', 'excel')
     } catch {
       setMessages(prev => [...prev, { role: 'assistant', content: isFr ? '❌ Erreur de connexion à l\'IA' : '❌ AI connection error', timestamp: Date.now() }])
@@ -514,13 +675,25 @@ Use emojis to make responses readable. Be direct, precise and helpful.`
                   }}>
                     {msg.role === 'user' ? '👤' : '🤖'}
                   </div>
-                  <div style={{
-                    maxWidth: '80%', padding: '10px 14px', borderRadius: msg.role === 'user' ? '16px 4px 16px 16px' : '4px 16px 16px 16px',
-                    background: msg.role === 'user' ? 'rgba(100,112,241,0.12)' : 'var(--surface2)',
-                    border: `1px solid ${msg.role === 'user' ? 'rgba(100,112,241,0.2)' : 'var(--border)'}`,
-                    fontSize: 13, color: 'var(--text)', lineHeight: 1.7, whiteSpace: 'pre-wrap',
-                  }}>
-                    {msg.content}
+                  <div style={{ maxWidth: msg.visualData ? '95%' : '80%', flex: msg.visualData ? 1 : 'unset' }}>
+                    {msg.content && (
+                      <div style={{
+                        padding: '10px 14px', borderRadius: msg.role === 'user' ? '16px 4px 16px 16px' : '4px 16px 16px 16px',
+                        background: msg.role === 'user' ? 'rgba(100,112,241,0.12)' : 'var(--surface2)',
+                        border: `1px solid ${msg.role === 'user' ? 'rgba(100,112,241,0.2)' : 'var(--border)'}`,
+                        fontSize: 13, color: 'var(--text)', lineHeight: 1.7, whiteSpace: 'pre-wrap',
+                      }}>
+                        {msg.content}
+                      </div>
+                    )}
+                    {msg.visualData && (
+                      <VisualTable
+                        data={msg.visualData.rows || []}
+                        title={msg.visualData.title || file?.name || 'Tableau'}
+                        headers={msg.visualData.headers || headers}
+                        isFr={isFr}
+                      />
+                    )}
                   </div>
                 </div>
               ))}
