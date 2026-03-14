@@ -1,7 +1,6 @@
-// api/claude.js — Route Vercel sécurisée pour l'API Anthropic
-// CommonJS requis pour les Vercel API Routes
+// api/claude.js — Route Vercel sécurisée
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
@@ -13,7 +12,11 @@ module.exports = async function handler(req, res) {
   if (!apiKey) return res.status(500).json({ error: 'API key not configured' })
 
   try {
-    const { messages, system, model, max_tokens } = req.body
+    const body = req.body
+    const messages = body.messages
+    const system = body.system
+    const model = body.model || 'claude-sonnet-4-20250514'
+    const max_tokens = body.max_tokens || 1000
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -23,21 +26,22 @@ module.exports = async function handler(req, res) {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: model || 'claude-sonnet-4-20250514',
-        max_tokens: max_tokens || 1000,
-        system: system || 'Tu es Aria, un assistant administratif IA professionnel.',
+        model,
+        max_tokens,
+        system: system || 'Tu es Aria, un assistant IA professionnel.',
         messages: Array.isArray(messages)
           ? messages
-          : [{ role: 'user', content: String(messages) }],
+          : [{ role: 'user', content: String(messages || '') }],
       }),
     })
 
+    const text = await response.text()
+
     if (!response.ok) {
-      const err = await response.text()
-      return res.status(response.status).json({ error: err })
+      return res.status(response.status).json({ error: text })
     }
 
-    const data = await response.json()
+    const data = JSON.parse(text)
     return res.status(200).json(data)
 
   } catch (error) {
