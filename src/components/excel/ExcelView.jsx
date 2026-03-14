@@ -378,7 +378,7 @@ VISUAL_TABLE_START
 VISUAL_TABLE_END` : ''}
 Give EXACT Excel formulas when asked. Be direct and helpful.`
 
-      const history = messages.slice(-6).map(m => ({ role: m.role, content: m.content }))
+      const history = messages.slice(-6).filter(m => m.role && m.content).map(m => ({ role: m.role, content: String(m.content) }))
 
       const response = await fetch('/api/claude', {
         method: 'POST',
@@ -394,6 +394,7 @@ Give EXACT Excel formulas when asked. Be direct and helpful.`
         })
       })
       const result = await response.json()
+      if (result.error) throw new Error(String(result.error))
       let reply = result.content?.find(c => c.type === 'text')?.text || (isFr ? 'Erreur de réponse' : 'Response error')
 
       // Extraire le tableau visuel si présent
@@ -477,6 +478,15 @@ Give EXACT Excel formulas when asked. Be direct and helpful.`
               {showChart ? '📋' : '📈'} {showChart ? (isFr ? 'Données' : 'Data') : (isFr ? 'Graphique' : 'Chart')}
             </button>
           </>}
+          {messages.length > 0 && (
+            <button onClick={() => { setMessages([]); setFiles([]); setActiveFile(0) }} style={{
+              fontSize: 12, padding: '6px 12px', borderRadius: 8,
+              border: '1px solid rgba(239,68,68,0.3)', background: 'rgba(239,68,68,0.08)',
+              color: '#ef4444', cursor: 'pointer'
+            }}>
+              🗑️ {isFr ? 'Réinitialiser' : 'Reset'}
+            </button>
+          )}
         </div>
       </div>
 
