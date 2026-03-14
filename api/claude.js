@@ -1,8 +1,7 @@
 // api/claude.js — Route Vercel sécurisée pour l'API Anthropic
-// La clé API est stockée côté serveur, jamais exposée au frontend
+// CommonJS requis pour les Vercel API Routes
 
-export default async function handler(req, res) {
-  // CORS
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
@@ -29,7 +28,7 @@ export default async function handler(req, res) {
         system: system || 'Tu es Aria, un assistant administratif IA professionnel.',
         messages: Array.isArray(messages)
           ? messages
-          : [{ role: 'user', content: messages }],
+          : [{ role: 'user', content: String(messages) }],
       }),
     })
 
