@@ -84,7 +84,7 @@ export default function AccountingView({ lang, addLog, triggerSave }) {
           ? `Tu es un expert OCR. Analyse cette image de facture et extrais les informations suivantes en JSON: { "number": "numéro facture", "client": "nom client", "amount": montant_numerique, "date": "date YYYY-MM-DD", "due": "date échéance YYYY-MM-DD", "category": "catégorie", "items": [{"desc": "description", "qty": quantité, "price": prix}] }. Réponds UNIQUEMENT avec le JSON, rien d'autre.`
           : `You are an OCR expert. Analyze this invoice image and extract: { "number": "invoice number", "client": "client name", "amount": numeric_amount, "date": "date YYYY-MM-DD", "due": "due date YYYY-MM-DD", "category": "category", "items": [{"desc": "description", "qty": quantity, "price": price}] }. Respond ONLY with JSON.`
 
-        const response = await fetch('https://api.anthropic.com/v1/messages', {
+        const response = await fetch('/api/claude', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
