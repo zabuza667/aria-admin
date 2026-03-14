@@ -360,23 +360,16 @@ Doublons: ${analysis?.duplicates || 0}
 Valeurs manquantes: ${analysis?.missing || 0}
 ` : (isFr ? 'Aucun fichier importé.' : 'No file imported.')
 
+      // System prompt court — les données vont dans le message utilisateur
       const systemPrompt = isFr
-        ? `Tu es Aria, un assistant expert en Excel et analyse de données intégré dans une app de gestion.
-Tu analyses des fichiers Excel et réponds aux questions en français de façon claire et structurée.
-Quand on te demande une formule Excel, tu donnes la formule EXACTE et complète, avec une explication.
-Tu utilises des emojis pour rendre les réponses lisibles.
-Tu es direct, précis, et utile. Tu ne donnes jamais de réponses vagues.
-${wantsVisual ? `IMPORTANT: L'utilisateur veut un tableau visuel. À la FIN de ta réponse texte, ajoute exactement ce bloc JSON (ne le modifie pas, remplace juste les valeurs):
-VISUAL_TABLE_START
-{"title":"[titre du tableau]","rows":[${JSON.stringify(data.slice(0,20))}],"headers":${JSON.stringify(headers)}}
-VISUAL_TABLE_END` : ''}
-Formules disponibles: SOMME, MOYENNE, MAX, MIN, NB, NBVAL, SI, SIERREUR, RECHERCHEV, INDEX, EQUIV, NB.SI, SOMME.SI, RANG, GRANDE.VALEUR, CONCATENER, MAJUSCULE, MINUSCULE, NBCAR, GAUCHE, DROITE, ARRONDI, ABS, RACINE, ECARTYPE, MEDIANE, AUJOURDHUI.`
-        : `You are Aria, an Excel and data analysis expert assistant.
-${wantsVisual ? `IMPORTANT: User wants a visual table. At the END of your text response, add exactly this JSON block:
-VISUAL_TABLE_START
-{"title":"[table title]","rows":[${JSON.stringify(data.slice(0,20))}],"headers":${JSON.stringify(headers)}}
-VISUAL_TABLE_END` : ''}
-Give EXACT Excel formulas when asked. Be direct and helpful.`
+        ? 'Tu es Aria, un assistant expert en Excel et analyse de données. Réponds en français, utilise des emojis, sois direct et précis. Pour les formules Excel, donne la formule EXACTE avec explication.'
+        : 'You are Aria, an Excel and data analysis expert. Be direct and precise. For Excel formulas, give the EXACT formula with explanation.'
+
+      // Instruction visuelle dans le message si besoin
+      const visualInstruction = wantsVisual ? (isFr
+        ? `\n\nIMPORTANT: À la FIN de ta réponse, ajoute ce bloc exact:\nVISUAL_TABLE_START\n{"title":"Tableau récapitulatif","rows":${JSON.stringify(data.slice(0,20))},"headers":${JSON.stringify(headers)}}\nVISUAL_TABLE_END`
+        : `\n\nIMPORTANT: At the END of your response, add this exact block:\nVISUAL_TABLE_START\n{"title":"Summary table","rows":${JSON.stringify(data.slice(0,20))},"headers":${JSON.stringify(headers)}}\nVISUAL_TABLE_END`
+      ) : ''
 
       const history = messages.slice(-6).filter(m => m.role && m.content).map(m => ({ role: m.role, content: String(m.content) }))
 
@@ -389,7 +382,7 @@ Give EXACT Excel formulas when asked. Be direct and helpful.`
           system: systemPrompt,
           messages: [
             ...history,
-            { role: 'user', content: `${context}\n\nQuestion: ${msg}` }
+            { role: 'user', content: `${context}\n\nQuestion: ${msg}${visualInstruction}` }
           ]
         })
       })
