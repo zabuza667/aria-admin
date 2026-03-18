@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useLS } from '../../hooks/useStore'
+import { useSupabaseTable } from '../../hooks/useSupabaseTable'
 import { callClaude } from '../../lib/claude'
 
 const SAMPLE_CONTACTS = [
@@ -11,7 +11,7 @@ const SAMPLE_CONTACTS = [
 ]
 
 export default function CRMView({ lang, addLog, triggerSave }) {
-  const [contacts, setContacts] = useLS('crm_contacts', SAMPLE_CONTACTS, triggerSave)
+  const { data: contacts, add: addContact, update: updateContact, remove: removeContact } = useSupabaseTable('contacts', user?.id, SAMPLE_CONTACTS)
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState('all')
   const [showModal, setShowModal] = useState(false)
@@ -45,8 +45,14 @@ export default function CRMView({ lang, addLog, triggerSave }) {
 
   function saveContact() {
     if (!editContact?.name) return
-    if (editContact.id) setContacts(prev => prev.map(c => c.id === editContact.id ? editContact : c))
-    else setContacts(prev => [...prev, { ...editContact, id: Date.now(), lastContact: new Date().toISOString().split('T')[0] }])
+    try {
+      if (editContact.id) {
+        const { id, user_id, created_at, ...updates } = editContact
+        await updateContact(editContact.id, updates)
+      } else {
+        await addContact({ ...editContact, lastContact: new Date().toISOString().split('T')[0] })
+      }
+    } catch(err) { console.error('saveContact:', err) }
     addLog?.('🤝 ' + (isFr ? 'Contact sauvegardé: ' : 'Contact saved: ') + editContact.name, 'success', 'crm')
     setShowModal(false); setEditContact(null)
   }
@@ -111,7 +117,7 @@ export default function CRMView({ lang, addLog, triggerSave }) {
             <div style={{ display: 'flex', gap: 4 }}>
               <button onClick={() => aiAnalyzeContact(contact)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted2)', fontSize: 14 }} title="AI analyze">🤖</button>
               <button onClick={() => { setEditContact({ ...contact }); setShowModal(true) }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--muted2)', fontSize: 14 }}>✏️</button>
-              <button onClick={() => { setContacts(prev => prev.filter(c => c.id !== contact.id)); addLog?.('🗑️ Contact supprimé', 'info', 'crm') }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.2)', fontSize: 14 }}>🗑️</button>
+              <button onClick={() => { removeContact(contact.id); addLog?.('🗑️ Contact supprimé', 'info', 'crm') }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.2)', fontSize: 14 }}>🗑️</button>
             </div>
           </div>
         ))}

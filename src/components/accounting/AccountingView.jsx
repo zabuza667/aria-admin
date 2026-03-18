@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { useLS } from '../../hooks/useStore'
+import { useSupabaseTable } from '../../hooks/useSupabaseTable'
 import { callClaude } from '../../lib/claude'
 import { exportInvoicesPDF, exportSingleInvoicePDF } from '../../lib/exportPDF'
 
@@ -23,8 +23,8 @@ const STATUS_CONFIG = {
 }
 
 export default function AccountingView({ lang, addLog, triggerSave }) {
-  const [invoices, setInvoices] = useLS('invoices', SAMPLE_INVOICES, triggerSave)
-  const [expenses, setExpenses] = useLS('expenses', SAMPLE_EXPENSES, triggerSave)
+  const { data: invoices, add: addInvoiceDB, update: updateInvoice, remove: removeInvoice } = useSupabaseTable('invoices', user?.id, SAMPLE_INVOICES)
+  const { data: expenses, add: addExpenseDB, update: updateExpense, remove: removeExpense } = useSupabaseTable('expenses', user?.id, SAMPLE_EXPENSES)
   const [activeTab, setActiveTab] = useState('invoices')
   const [showModal, setShowModal] = useState(false)
   const [editItem, setEditItem] = useState(null)
@@ -130,24 +130,24 @@ export default function AccountingView({ lang, addLog, triggerSave }) {
       due: ocrResult.due || '',
       category: ocrResult.category || 'Autre',
     }
-    setInvoices(prev => [newInvoice, ...prev])
+    await addInvoiceDB(newInvoice)
     setShowOcr(false)
     setOcrResult(null)
     addLog?.('✅ ' + (isFr ? 'Facture importée depuis OCR' : 'Invoice imported from OCR'), 'success', 'accounting')
   }
 
   function deleteItem(id) {
-    if (activeTab === 'invoices') setInvoices(prev => prev.filter(i => i.id !== id))
-    else setExpenses(prev => prev.filter(e => e.id !== id))
+    if (activeTab === 'invoices') await removeInvoice(id)
+    else await removeExpense(id)
   }
 
   function saveItem(item) {
     if (activeTab === 'invoices') {
-      if (editItem?.id) setInvoices(prev => prev.map(i => i.id === editItem.id ? { ...i, ...item } : i))
-      else setInvoices(prev => [{ ...item, id: Date.now() }, ...prev])
+      if (editItem?.id) await updateInvoice(editItem.id, item)
+      else await addInvoiceDB(item)
     } else {
-      if (editItem?.id) setExpenses(prev => prev.map(e => e.id === editItem.id ? { ...e, ...item } : e))
-      else setExpenses(prev => [{ ...item, id: Date.now() }, ...prev])
+      if (editItem?.id) await updateExpense(editItem.id, item)
+      else await addExpenseDB(item)
     }
     setShowModal(false)
     setEditItem(null)

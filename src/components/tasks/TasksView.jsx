@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useLS } from '../../hooks/useStore'
+import { useState, useEffect } from 'react'
+import { useSupabaseTable } from '../../hooks/useSupabaseTable'
 import { callClaude } from '../../lib/claude'
 
 const COLUMNS = [
@@ -18,7 +18,7 @@ const SAMPLE_TASKS = [
 ]
 
 export default function TasksView({ lang, user, addLog, triggerSave }) {
-  const [tasks, setTasks] = useLS('tasks', SAMPLE_TASKS, triggerSave)
+  const { data: tasks, loading: tasksLoading, add: addTask, update: updateTask, remove: removeTask } = useSupabaseTable('tasks', user?.id, SAMPLE_TASKS)
   const [showModal, setShowModal] = useState(false)
   const [editTask, setEditTask] = useState(null)
   const [aiSuggesting, setAiSuggesting] = useState(false)
@@ -31,26 +31,31 @@ export default function TasksView({ lang, user, addLog, triggerSave }) {
   function openNew() { setEditTask({ title: '', desc: '', status: 'todo', priority: 'moyenne', due: '', assignee: '' }); setShowModal(true) }
   function openEdit(t) { setEditTask({ ...t }); setShowModal(true) }
 
-  function saveTask() {
+  async function saveTask() {
     if (!editTask?.title) return
-    if (editTask.id) {
-      setTasks(prev => prev.map(t => t.id === editTask.id ? editTask : t))
-      addLog?.('✏️ ' + (isFr ? 'Tâche modifiée: ' : 'Task edited: ') + editTask.title, 'info', 'tasks')
-    } else {
-      const newTask = { ...editTask, id: Date.now() }
-      setTasks(prev => [...prev, newTask])
-      addLog?.('✅ ' + (isFr ? 'Tâche créée: ' : 'Task created: ') + editTask.title, 'success', 'tasks')
-    }
+    try {
+      if (editTask.id && !String(editTask.id).startsWith('temp_')) {
+        const { id, user_id, created_at, ...updates } = editTask
+        await updateTask(editTask.id, updates)
+        addLog?.('✏️ ' + (isFr ? 'Tâche modifiée: ' : 'Task edited: ') + editTask.title, 'info', 'tasks')
+      } else {
+        const { id, ...newTask } = editTask
+        await addTask(newTask)
+        addLog?.('✅ ' + (isFr ? 'Tâche créée: ' : 'Task created: ') + editTask.title, 'success', 'tasks')
+      }
+    } catch (err) { console.error('saveTask:', err) }
     setShowModal(false); setEditTask(null)
   }
 
-  function deleteTask(id) {
-    setTasks(prev => prev.filter(t => t.id !== id))
-    addLog?.('🗑️ ' + (isFr ? 'Tâche supprimée' : 'Task deleted'), 'info', 'tasks')
+  async function deleteTask(id) {
+    try {
+      await removeTask(id)
+      addLog?.('🗑️ ' + (isFr ? 'Tâche supprimée' : 'Task deleted'), 'info', 'tasks')
+    } catch (err) { console.error('deleteTask:', err) }
   }
 
   function moveTask(taskId, newStatus) {
-    setTasks(prev => prev.map(t => t.id === taskId ? { ...t, status: newStatus } : t))
+    updateTask(taskId, { status: newStatus })
   }
 
   async function aiSuggestTasks() {
@@ -63,8 +68,7 @@ export default function TasksView({ lang, user, addLog, triggerSave }) {
       const match = result.match(/\[[\s\S]+\]/)
       if (match) {
         const suggestions = JSON.parse(match[0])
-        const newTasks = suggestions.map(s => ({ ...s, id: Date.now() + Math.random(), due: '' }))
-        setTasks(prev => [...prev, ...newTasks])
+        for (const s of suggestions) { await addTask({ ...s, due: '' }) }
         addLog?.('🤖 ' + (isFr ? 'Tâches suggérées par IA ajoutées' : 'AI suggested tasks added'), 'success', 'tasks')
       }
     } catch {}
