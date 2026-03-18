@@ -77,22 +77,42 @@ export default function App() {
 
   // Auth
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        supabase.from('profiles').select('*').eq('id', session.user.id).single().then(({ data: profile }) => {
-          setUser({
-            id: session.user.id,
-            email: session.user.email,
-            name: profile?.name || session.user.email?.split('@')[0] || 'Utilisateur',
-            role: profile?.role || 'admin',
-          })
-          localStorage.setItem('last_login', new Date().toISOString())
+    async function loadUser(supabaseUser) {
+      if (!supabaseUser) { setUser(null); setAuthLoading(false); return }
+      try {
+        const { data: profile } = await supabase.from('profiles').select('*').eq('id', supabaseUser.id).single()
+        setUser({
+          id: supabaseUser.id,
+          email: supabaseUser.email,
+          name: profile?.name || supabaseUser.email?.split('@')[0] || 'Utilisateur',
+          role: profile?.role || 'admin',
+          avatar: profile?.avatar || null,
+        })
+      } catch {
+        setUser({
+          id: supabaseUser.id,
+          email: supabaseUser.email,
+          name: supabaseUser.email?.split('@')[0] || 'Utilisateur',
+          role: 'admin',
         })
       }
       setAuthLoading(false)
+    }
+
+    // Session existante au chargement
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      loadUser(session?.user || null)
     })
+
+    // Ecouter tous les changements auth
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_OUT') setUser(null)
+      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        loadUser(session?.user || null)
+      }
+      if (event === 'SIGNED_OUT') {
+        setUser(null)
+        setAuthLoading(false)
+      }
     })
     return () => subscription.unsubscribe()
   }, [])
