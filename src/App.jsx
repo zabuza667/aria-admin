@@ -27,7 +27,7 @@ const INACTIVITY_LIMIT = 30 * 60 * 1000 // 30 minutes
 
 export default function App() {
   const { lang, setLang, user, setUser, notifications, setNotifications, logs, setLogs, addLog, addNotification, saveIndicator, triggerSave } = useAppStore()
-  const [section, setSection] = useState('dashboard')
+  const [section, setSection] = useState(() => localStorage.getItem('aria_last_section') || 'dashboard')
   const [prevSection, setPrevSection] = useState('dashboard')
   const [authLoading, setAuthLoading] = useState(true)
   const [darkMode, setDarkMode] = useState(true)
@@ -35,7 +35,9 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('')
   const [briefingShownToday, setBriefingShownToday] = useState(() => {
     const today = new Date().toDateString()
-    return localStorage.getItem('briefing_seen_' + today) === '1'
+    // Ne montrer le briefing qu'une fois par jour, pas au refresh
+    return localStorage.getItem('briefing_seen_' + today) === '1' || 
+           localStorage.getItem('aria_last_section') !== null
   })
   const [refreshKey, setRefreshKey] = useState(0)
   const [animKey, setAnimKey] = useState(0)
