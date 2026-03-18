@@ -43,7 +43,7 @@ export default function CRMView({ lang, addLog, triggerSave }) {
     setAiLoading(false)
   }
 
-  function saveContact() {
+  async function saveContact() {
     if (!editContact?.name) return
     try {
       if (editContact.id) {
