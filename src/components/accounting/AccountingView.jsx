@@ -118,7 +118,7 @@ export default function AccountingView({ lang, addLog, triggerSave }) {
     }
   }
 
-  function importOcrInvoice() {
+  async function importOcrInvoice() {
     if (!ocrResult || ocrResult.error) return
     const newInvoice = {
       id: Date.now(),
@@ -136,12 +136,12 @@ export default function AccountingView({ lang, addLog, triggerSave }) {
     addLog?.('✅ ' + (isFr ? 'Facture importée depuis OCR' : 'Invoice imported from OCR'), 'success', 'accounting')
   }
 
-  function deleteItem(id) {
+  async function deleteItem(id) {
     if (activeTab === 'invoices') await removeInvoice(id)
     else await removeExpense(id)
   }
 
-  function saveItem(item) {
+  async function saveItem(item) {
     if (activeTab === 'invoices') {
       if (editItem?.id) await updateInvoice(editItem.id, item)
       else await addInvoiceDB(item)
